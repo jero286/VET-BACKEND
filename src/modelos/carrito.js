@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const carritoSchema = new mongoose.Schema({
   idUsuario: {
     type: String,
+    required: true,
   },
   productos: [],
 });
