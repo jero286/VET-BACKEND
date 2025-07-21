@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const turnosSchema = new mongoose.Schema({
+const TurnosSchema = new mongoose.Schema({
+  idUsuario: {
+    type: String,
+    required: true
+  },  
   detalle: {
     type: String,
     trim: true,
@@ -24,8 +28,9 @@ const turnosSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  turnos: []
 });
 
-const turnosModelo = mongoose.model("turnos", turnosSchema);
+const TurnosModelo = mongoose.model("turnos", TurnosSchema);
 
-module.exports = turnosModelo;
+module.exports = TurnosModelo;
