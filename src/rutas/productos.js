@@ -7,5 +7,3 @@ router.put("/:id");
 router.delete("/:id");
 
 module.exports = router;
-
-//CRUD DE PRODUCTOS
