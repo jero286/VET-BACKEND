@@ -8,4 +8,3 @@ router.delete("/:id");
 
 module.exports = router;
 
-//CRUD TURNOS
