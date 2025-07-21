@@ -8,6 +8,13 @@ const obtenerTurnoPorId = async (req, res) => {
 const eliminarTurno = async (req, res) => {
   try {
   } catch (error) {
-    res.status(404).json({ msg: "No se puede borrar un turno inexistente" });
+    res.status(404).json({ msg: "No existe el turno", error });
+  }
+};
+
+const actualizarTurno = async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(404).json({ msg: "No existe el turno", error });
   }
 };
