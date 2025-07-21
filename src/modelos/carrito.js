@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 
-const carritoSchema = new mongoose.Schema({
+const CarritoSchema = new mongoose.Schema({
   idUsuario: {
     type: String,
     required: true,
   },
   productos: [],
+  planMascota: []
 });
 
-const modeloCarrito = mongoose.model("carrito", carritoSchema);
+const ModeloCarrito = mongoose.model("carrito", CarritoSchema);
 
-module.exports = modeloCarrito;
+module.exports = ModeloCarrito;
