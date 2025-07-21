@@ -22,7 +22,7 @@ const UsuarioSchema = new mongoose.Schema({
         enum: ["usuario", "admin"],
         default: "usuario"
     },
-    contraseña: {
+    contrasenia: {
         required: true,
         type: String,
         trim: true
@@ -32,9 +32,18 @@ const UsuarioSchema = new mongoose.Schema({
         type: String,
         trim: true,
         unique: true
+    },
+    idCarrito: {
+        type: String
+    },
+    idMascotas: {
+        type: String
+    },
+    idTurnos: {
+        type: String
     }
 })
 
-const UsuarioModel = mongoose.model("usuarios", UsuarioSchema)
+const UsuariosModelo = mongoose.model("usuarios", UsuarioSchema)
 
-module.exports = UsuarioModel
+module.exports = UsuariosModelo
