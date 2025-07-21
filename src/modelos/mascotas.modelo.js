@@ -1,6 +1,10 @@
 const mongoose = require("mongoose")
 
 const MascotaSchema = new mongoose.Schema({
+idUsuario: {
+    type: String,
+    required: true
+},
 nombre: {
     required: true,
     type: String,
@@ -25,9 +29,10 @@ sexo: {
     type: String,
     trim: true,
     enum: ['macho', 'hembra']
-}
+},
+mascotas: []
 })
 
-const MascotasModel = mongoose.model("mascotas", MascotaSchema)
+const MascotasModelo = mongoose.model("mascotas", MascotaSchema)
 
-module.exports = MascotasModel
+module.exports = MascotasModelo

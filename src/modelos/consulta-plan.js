@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const consultaSchema = new mongoose.Schema({
+const ConsultaSchema = new mongoose.Schema({
   tipoPlan: {
     type: String,
     required: true,
@@ -31,6 +31,6 @@ const consultaSchema = new mongoose.Schema({
   },
 });
 
-const modeloConsulta = mongoose.model("consultaPLan", consultaSchema);
+const ModeloConsulta = mongoose.model("consultaPLan", ConsultaSchema);
 
-module.exports = modeloConsulta;
+module.exports = ModeloConsulta;
