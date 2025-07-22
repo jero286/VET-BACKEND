@@ -19,7 +19,7 @@ const eliminarTurno = async (req, res) => {
   try {
     const { statusCode, msg } = await eliminarTurnoService(req.params.id);
     res.status(statusCode).json({ msg });
-  } catch (error) {
+  } catch {
     const { statusCodeError } = await eliminarTurnoService(req.params.id);
     res
       .status(statusCodeError)
@@ -34,7 +34,7 @@ const actualizarTurno = async (req, res) => {
       req.body
     );
     res.status(statusCode).json({ msg });
-  } catch (error) {
+  } catch {
     const { statusCodeError } = await actualizarTurnoService(
       req.params.id,
       req.body
