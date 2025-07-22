@@ -21,6 +21,7 @@ const crearNuevoProductoServicios = async (body) => {
     await nuevoProducto.save()
     return{
         msg: "Producto Creado",
+        idProducto: nuevoProducto._id,
         statusCode: 201
     }
 }
@@ -41,10 +42,37 @@ const eliminarProductoPorIdServicios = async (idProducto) => {
     }
 }
 
+const cambiarEstadoDeLProductoServicios = async (idProducto) => {
+    try {
+        const producto = await ModeloProducto.findById(idProducto)
+        console.log(producto)
+
+        if(producto.habilitado){
+            producto.habilitado = false
+        } else {
+            producto.habilitado = true
+        }
+
+        console.log(producto)
+        await producto.save()
+
+        return{
+            msg: `Producto ${producto.habilitado ? "habilitado" : "desabilitado"}`,
+            statusCode: 200
+        }
+    } catch (error) {
+        return{
+            error,
+            statusCode: 500
+        }
+    }
+}
+
 module.exports = {
     obtenerTodosLosProductosServicios,
     obtenerProductoPorIdServicios,
     crearNuevoProductoServicios,
     actualizarProductoPorIdServicios,
-    eliminarProductoPorIdServicios
+    eliminarProductoPorIdServicios,
+    cambiarEstadoDeLProductoServicios
 }
