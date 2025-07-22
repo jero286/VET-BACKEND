@@ -12,6 +12,6 @@ app.use(cors());
 app.use(morgan("dev"));
 
 // Rutas
-app.use("/productos", require("./src/rutas/productos"))
-
+app.use("/productos", require("./src/rutas/productos"));
+app.use("/turnos", require("./src/rutas/turnos"));
 app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
