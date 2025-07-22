@@ -7,10 +7,9 @@ const obtenerTurnoPorIdService = async (idTurno) => {
       statusCode: 200,
       msg: turno,
     };
-  } catch (error) {
+  } catch {
     return {
-      statusCode: 404,
-      msg: "Turno no existe",
+      statusCodeError: 404,
     };
   }
 };

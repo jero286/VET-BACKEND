@@ -1,7 +1,12 @@
+const { obtenerTurnoPorIdService } = require("../servicios/turnos.servicios");
+
 const obtenerTurnoPorId = async (req, res) => {
   try {
-  } catch (error) {
-    res.status(404).json({ msg: "Turno no encontrado", error });
+    const { statusCode, msg } = await obtenerTurnoPorIdService(req.params.id);
+    res.status(statusCode).json({ msg });
+  } catch {
+    const { statusCodeError } = await obtenerTurnoPorIdService(req.params.id);
+    res.status(statusCodeError).json({msg:"Turno no existe"});
   }
 };
 
