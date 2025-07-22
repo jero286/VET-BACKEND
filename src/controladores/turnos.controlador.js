@@ -1,4 +1,7 @@
-const { obtenerTurnoPorIdService } = require("../servicios/turnos.servicios");
+const {
+  obtenerTurnoPorIdService,
+  eliminarTurnoService,
+} = require("../servicios/turnos.servicios");
 
 const obtenerTurnoPorId = async (req, res) => {
   try {
@@ -6,14 +9,19 @@ const obtenerTurnoPorId = async (req, res) => {
     res.status(statusCode).json({ msg });
   } catch {
     const { statusCodeError } = await obtenerTurnoPorIdService(req.params.id);
-    res.status(statusCodeError).json({msg:"Turno no existe"});
+    res.status(statusCodeError).json({ msg: "Turno no existe" });
   }
 };
 
 const eliminarTurno = async (req, res) => {
   try {
+    const { statusCode, msg } = await eliminarTurnoService(req.params.id);
+    res.status(statusCode).json({ msg });
   } catch (error) {
-    res.status(404).json({ msg: "No existe el turno", error });
+    const { statusCodeError } = await eliminarTurnoService(req.params.id);
+    res
+      .status(statusCodeError)
+      .json({ msg: "No se puede eliminar un turno inexistente" });
   }
 };
 

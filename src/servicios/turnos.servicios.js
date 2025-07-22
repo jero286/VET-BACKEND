@@ -14,6 +14,21 @@ const obtenerTurnoPorIdService = async (idTurno) => {
   }
 };
 
+const eliminarTurnoService = async (idTurno) => {
+  try {
+    await turnoModelo.findByIdAndDelete({ _id: idTurno });
+    return {
+      statusCode: 204,
+      msg: "Turno eliminado",
+    };
+  } catch {
+    return {
+      statusCodeError: 404,
+    };
+  }
+};
+
 module.exports = {
   obtenerTurnoPorIdService,
+  eliminarTurnoService,
 };
