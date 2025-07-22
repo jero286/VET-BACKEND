@@ -6,9 +6,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 require("./src/mongoDB_config/config");
 
-app.listen(process.env.PUERTO, () =>
-  console.log("Servidor levantado en el puerto:", process.env.PUERTO)
-);
+app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 
 app.use(express.json());
 app.use(cors());
