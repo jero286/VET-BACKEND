@@ -2,6 +2,7 @@ const {
   obtenerTurnoPorIdService,
   eliminarTurnoService,
   actualizarTurnoService,
+  crearTurnoService,
 } = require("../servicios/turnos.servicios");
 
 const obtenerTurnoPorId = async (req, res) => {
@@ -46,11 +47,15 @@ const actualizarTurno = async (req, res) => {
 
 const crearTurno = async (req, res) => {
   try {
-  } catch (error) {
-    res.status(400).json({
-      msg: "No se puede crear el turno. Por favor, llene bien los campos",
-      error,
-    });
+    const { statusCode, msg } = await crearTurnoService(req.body);
+    res.status(statusCode.json({ msg }));
+  } catch {
+    const { statusCodeError } = await crearTurnoService(req.body);
+    res
+      .status(statusCodeError)
+      .json({
+        msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
+      });
   }
 };
 

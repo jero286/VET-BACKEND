@@ -1,4 +1,5 @@
 const turnoModelo = require("../modelos/turnos.js");
+const usuarioModelo = require("../modelos/usuarios.modelo.js");
 
 const obtenerTurnoPorIdService = async (idTurno) => {
   try {
@@ -42,8 +43,27 @@ const actualizarTurnoService = async (idTurno, body) => {
   }
 };
 
+const crearTurnoService = async (body) => {
+  try {
+    const nuevoTurno = new turnoModelo(body);
+    const usuario = new usuarioModelo({ idTurnos: nuevoTurno._id });
+    nuevoTurno.idUsuario = usuario._id;
+    await nuevoTurno.save();
+    await usuario.save();
+    return {
+      statusCode: 201,
+      msg: "Turno creado",
+    };
+  } catch {
+    return {
+      statusCodeError: 400,
+    };
+  }
+};
+
 module.exports = {
   obtenerTurnoPorIdService,
   eliminarTurnoService,
-  actualizarTurnoService
+  actualizarTurnoService,
+  crearTurnoService,
 };
