@@ -28,7 +28,22 @@ const eliminarTurnoService = async (idTurno) => {
   }
 };
 
+const actualizarTurnoService = async (idTurno, body) => {
+  try {
+    await turnoModelo.findByIdAndUpdate({ _id: idTurno }, body);
+    return {
+      statusCode: 200,
+      msg: "Turno actualizado",
+    };
+  } catch {
+    return {
+      statusCodeError: 404,
+    };
+  }
+};
+
 module.exports = {
   obtenerTurnoPorIdService,
   eliminarTurnoService,
+  actualizarTurnoService
 };

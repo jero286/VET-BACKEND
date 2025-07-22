@@ -1,6 +1,7 @@
 const {
   obtenerTurnoPorIdService,
   eliminarTurnoService,
+  actualizarTurnoService,
 } = require("../servicios/turnos.servicios");
 
 const obtenerTurnoPorId = async (req, res) => {
@@ -27,8 +28,19 @@ const eliminarTurno = async (req, res) => {
 
 const actualizarTurno = async (req, res) => {
   try {
+    const { statusCode, msg } = await actualizarTurnoService(
+      req.params.id,
+      req.body
+    );
+    res.status(statusCode).json({ msg });
   } catch (error) {
-    res.status(404).json({ msg: "No existe el turno", error });
+    const { statusCodeError } = await actualizarTurnoService(
+      req.params.id,
+      req.body
+    );
+    res
+      .status(statusCodeError)
+      .json({ msg: "Turno no existe para actualizar" });
   }
 };
 
