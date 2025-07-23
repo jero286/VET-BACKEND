@@ -15,3 +15,7 @@ app.use(morgan("dev"));
 app.use("/productos", require("./src/rutas/productos"));
 app.use("/turnos", require("./src/rutas/turnos"));
 app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
+
+// Carrito
+const carritoRoutes = require('./rutas/carrito.rutas');
+app.use('/carrito', carritoRoutes);
