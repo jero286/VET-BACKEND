@@ -19,3 +19,4 @@ app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 // Carrito
 const carritoRoutes = require('./rutas/carrito');
 app.use('/carrito', carritoRoutes);
+
