@@ -1,4 +1,4 @@
-const carritoService = require('../servicios/carrito.js');
+const carritoService = require('../servicios/carrito');
 
 // POST /carrito/agregar
 const agregarProducto = (req, res) => {
