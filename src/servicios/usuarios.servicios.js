@@ -25,18 +25,12 @@ const crearNuevoUsuarioServicios = async (body) => {
     try {
     const nuevoUsuario = new UsuariosModelo(body)
     const carritoUsuario = new ModeloCarrito({idUsuario: nuevoUsuario._id})
-    const mascotasUsuario = new MascotasModelo({idUsuario: nuevoUsuario._id})
-    const turnosUsuario = new TurnosModelo({idUsuario: nuevoUsuario._id})
 
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia)
     nuevoUsuario.idCarrito = carritoUsuario._id
-    nuevoUsuario.idMascotas = mascotasUsuario._id
-    nuevoUsuario.idTurnos = turnosUsuario._id
 
         await nuevoUsuario.save();
         await carritoUsuario.save();
-        await mascotasUsuario.save();
-        await turnosUsuario.save();
 
         return{
         msg: "Usuario Creado",
@@ -46,7 +40,7 @@ const crearNuevoUsuarioServicios = async (body) => {
     } catch (error) {
         console.log(error)
         return{
-            error,
+            msg:"Error al crear usuario",
             statusCode: 500
         }
     }
@@ -95,7 +89,7 @@ const actualizarUsuarioPorIdServices = async (idUsuario, body) => {
 }
 
 const eliminarUsuarioPorIdServices = async (idUsuario) => {
-    await UsuariosModelo.findByIdAndUpdate({_id: idUsuario})
+    await UsuariosModelo.findByIdAndDelete({_id: idUsuario})
 
     return{
         msg: "Usuario Eliminado",
