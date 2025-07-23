@@ -2,8 +2,6 @@ const UsuariosModelo = require("../modelos/usuarios.modelo")
 const argon = require("argon2")
 const jwt = require("jsonwebtoken")
 const ModeloCarrito = require("../modelos/carrito")
-const MascotasModelo = require("../modelos/mascotas.modelo")
-const TurnosModelo = require("../modelos/turnos")
 
 const obtenerTodosLosUsuariosServicios = async () => {
     const usuarios = await UsuariosModelo.find()
