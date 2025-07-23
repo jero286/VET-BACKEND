@@ -17,6 +17,5 @@ app.use("/turnos", require("./src/rutas/turnos"));
 app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 
 // Carrito
-const carritoRoutes = require('./rutas/carrito');
+const carritoRoutes = require('./src/rutas/carrito');
 app.use('/carrito', carritoRoutes);
-require('dotenv').config();
