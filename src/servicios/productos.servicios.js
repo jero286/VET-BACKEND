@@ -16,7 +16,7 @@ const obtenerProductoPorIdServicios = async (idProducto) => {
     }
 }
 
-const crearNuevoProductoServicios = async (body) => {
+const crearNuevoProductoServicios = async (body,file) => {
     const nuevoProducto = new ModeloProducto(body)
     await nuevoProducto.save()
     return{
