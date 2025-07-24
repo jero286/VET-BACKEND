@@ -2,8 +2,8 @@ const { obtenerTodosLosUsuariosServicios,
        obtenerUnUsuarioPorIdServicios,
        crearNuevoUsuarioServicios,
        iniciarSesionServicios,
-       actualizarUsuarioPorIdServices,
-       eliminarUsuarioPorIdServices,
+       actualizarUsuarioPorIdServicios,
+       eliminarUsuarioPorIdServicios,
      } = require("../servicios/usuarios.servicios")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -31,7 +31,7 @@ const iniciarSesion = async (req, res) => {
 }
 
 const actualizarUsuarioPorId = async (req, res) => {
-    const {msg, statusCode} = await actualizarUsuarioPorIdServices(
+    const {msg, statusCode} = await actualizarUsuarioPorIdServicios(
         req.params.id,
         req.body
     )
@@ -39,7 +39,7 @@ const actualizarUsuarioPorId = async (req, res) => {
 }
 
 const eliminarUsuarioPorId = async (req, res) => {
-    const {msg, statusCode} = await eliminarUsuarioPorIdServices(req.params.id)
+    const {msg, statusCode} = await eliminarUsuarioPorIdServicios(req.params.id)
     res.status(statusCode).json({msg})
 }
 

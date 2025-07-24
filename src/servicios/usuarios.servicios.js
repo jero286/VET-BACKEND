@@ -77,7 +77,7 @@ const iniciarSesionServicios = async (body) => {
     }
 }
 
-const actualizarUsuarioPorIdServices = async (idUsuario, body) => {
+const actualizarUsuarioPorIdServicios = async (idUsuario, body) => {
     await UsuariosModelo.findByIdAndUpdate({_id: idUsuario}, body)
 
     return{
@@ -86,7 +86,7 @@ const actualizarUsuarioPorIdServices = async (idUsuario, body) => {
     }
 }
 
-const eliminarUsuarioPorIdServices = async (idUsuario) => {
+const eliminarUsuarioPorIdServicios = async (idUsuario) => {
     await UsuariosModelo.findByIdAndDelete({_id: idUsuario})
 
     return{
@@ -100,6 +100,6 @@ module.exports = {
     obtenerUnUsuarioPorIdServicios,
     crearNuevoUsuarioServicios,
     iniciarSesionServicios,
-    actualizarUsuarioPorIdServices,
-    eliminarUsuarioPorIdServices
+    actualizarUsuarioPorIdServicios,
+    eliminarUsuarioPorIdServicios
 }
