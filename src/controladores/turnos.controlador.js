@@ -48,14 +48,12 @@ const actualizarTurno = async (req, res) => {
 const crearTurno = async (req, res) => {
   try {
     const { statusCode, msg } = await crearTurnoService(req.body);
-    res.status(statusCode.json({ msg }));
+    res.status(statusCode).json({ msg });
   } catch {
     const { statusCodeError } = await crearTurnoService(req.body);
-    res
-      .status(statusCodeError)
-      .json({
-        msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
-      });
+    res.status(statusCodeError).json({
+      msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
+    });
   }
 };
 

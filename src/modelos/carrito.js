@@ -6,7 +6,7 @@ const CarritoSchema = new mongoose.Schema({
     required: true,
   },
   productos: [],
-  planMascota: []
+  planMascota: [],
 });
 
 const ModeloCarrito = mongoose.model("carrito", CarritoSchema);

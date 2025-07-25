@@ -1,14 +1,17 @@
 const express = require("express");
-const { obtenerTodosLosProductos,
-        obtenerProductoPorId,
-        crearNuevoProducto,
-        actualizarProductoPorId,
-        eliminarProductoPorId, } = require("../controladores/productos.controlador");
+const {
+  obtenerTodosLosProductos,
+  obtenerProductoPorId,
+  crearNuevoProducto,
+  actualizarProductoPorId,
+  eliminarProductoPorId,
+} = require("../controladores/productos.controlador");
 const router = express.Router();
+const multerMiddleware = require("../middlewares/multer.middleware");
 
 router.get("/", obtenerTodosLosProductos);
 router.get("/:id", obtenerProductoPorId);
-router.post("/", crearNuevoProducto);
+router.post("/", multerMiddleware.single("imagen"), crearNuevoProducto);
 router.put("/:id", actualizarProductoPorId);
 router.delete("/:id", eliminarProductoPorId);
 
