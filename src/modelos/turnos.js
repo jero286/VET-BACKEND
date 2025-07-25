@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const TurnosSchema = new mongoose.Schema({
   idUsuario: {
-    type: String,
-    required: true
-  },  
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   detalle: {
     type: String,
     trim: true,
@@ -28,7 +28,6 @@ const TurnosSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  turnos: []
 });
 
 const TurnosModelo = mongoose.model("turnos", TurnosSchema);

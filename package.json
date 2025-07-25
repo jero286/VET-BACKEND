@@ -1,7 +1,6 @@
 {
   "name": "vet---backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "node --env-file .env --watch index.js"
@@ -23,5 +22,14 @@
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jero286/VET-BACKEND.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jero286/VET-BACKEND/issues"
+  },
+  "homepage": "https://github.com/jero286/VET-BACKEND#readme",
+  "description": ""
 }

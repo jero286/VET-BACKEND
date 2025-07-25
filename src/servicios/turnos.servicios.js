@@ -46,7 +46,7 @@ const actualizarTurnoService = async (idTurno, body) => {
 const crearTurnoService = async (body) => {
   try {
     const nuevoTurno = new turnoModelo(body);
-    const usuario = new usuarioModelo({ idTurnos: nuevoTurno._id });
+    const usuario = await usuarioModelo.findOne({_id:body.idUsuario})
     nuevoTurno.idUsuario = usuario._id;
     await nuevoTurno.save();
     await usuario.save();

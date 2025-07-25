@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const MascotaSchema = new mongoose.Schema({
 idUsuario: {
     type: String,
+    ref: 'Usuario',
     required: true
 },
 nombre: {
