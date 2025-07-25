@@ -27,6 +27,8 @@ const crearNuevoUsuarioServicios = async (body) => {
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia)
     nuevoUsuario.idCarrito = carritoUsuario._id
 
+    registroExitoso (body.emailUsuario, body.nombreUsuario)
+
         await nuevoUsuario.save();
         await carritoUsuario.save();
 
@@ -95,11 +97,55 @@ const eliminarUsuarioPorIdServicios = async (idUsuario) => {
     }
 } 
 
+// const jwt = require("jsonwebtoken");
+// const UsuariosModel = require("../models/Usuarios"); // ajusta ruta
+
+const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
+  try {
+    console.log(emailUsuario);
+
+    const usuarioExiste = await UsuariosModelo.findOne({ emailUsuario });
+    console.log(usuarioExiste);
+
+    if (!usuarioExiste) {
+      return {
+        error: "Usuario no encontrado",
+        statusCode: 404,
+      };
+    }
+
+    const payload = {
+      idUsuario: usuarioExiste._id,
+    };
+
+    const tokenRecuperarContrasenia = jwt.sign(payload, process.env.JWT_SECRET_RECOVEY_PASS, {
+      expiresIn: "1h", // expiración del token, ajusta si querés
+    });
+
+    // Corrección: primero email, luego token (según función recuperarContrasenia)
+    await recuperarContrasenia(usuarioExiste.emailUsuario, tokenRecuperarContrasenia);
+
+    return {
+      msg: "Correo de recuperación enviado",
+      statusCode: 200,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error: error.message || "Error inesperado",
+      statusCode: 500,
+    };
+  }
+};
+
+
 module.exports = {
     obtenerTodosLosUsuariosServicios,
     obtenerUnUsuarioPorIdServicios,
     crearNuevoUsuarioServicios,
     iniciarSesionServicios,
     actualizarUsuarioPorIdServicios,
-    eliminarUsuarioPorIdServicios
+    eliminarUsuarioPorIdServicios,
+    recuperarContraseniaUsuarioServices
+    
 }
