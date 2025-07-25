@@ -20,8 +20,11 @@
     "mongoose": "^8.16.4",
     "moongose": "^1.0.0",
     "morgan": "^1.10.1",
-<<<<<<< HEAD
+
     "nodemailer": "^7.0.5"
+    "multer": "2.0.2"
+
+    
   },
   "repository": {
     "type": "git",
@@ -32,8 +35,8 @@
   },
   "homepage": "https://github.com/jero286/VET-BACKEND#readme",
   "description": ""
-=======
-    "multer": "^2.0.2"
+  "multer":
+
+  
   }
->>>>>>> c4570202f100645283d33cddb06da726983e8497
 }
