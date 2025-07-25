@@ -19,7 +19,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.4",
     "morgan": "^1.10.1",
-<<<<<<< HEAD
     "nodemailer": "^7.0.5"
   },
   "repository": {
@@ -31,8 +30,4 @@
   },
   "homepage": "https://github.com/jero286/VET-BACKEND#readme",
   "description": ""
-=======
-    "multer": "^2.0.2"
-  }
->>>>>>> c4570202f100645283d33cddb06da726983e8497
 }
