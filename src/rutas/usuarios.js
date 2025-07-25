@@ -4,16 +4,21 @@ const { obtenerTodosLosUsuarios,
        crearNuevoUsuario,
        actualizarUsuarioPorId,
        eliminarUsuarioPorId,
-       iniciarSesion, } = require("../controladores/usuarios.controlador");
+       iniciarSesion, 
+       recuperarContraseniaUsuario
+} = require("../controladores/usuarios.controlador");
 const router = express.Router();
 
 router.get("/", obtenerTodosLosUsuarios)
 router.get("/:id", obtenerUnUsuarioPorId);
 router.post("/", crearNuevoUsuario);
 router.post("/login", iniciarSesion);
+router.post("/recoveryPassEmail", recuperarContraseniaUsuario);
 router.put("/:id", actualizarUsuarioPorId);
 router.delete("/:id", eliminarUsuarioPorId);
 
+
+
 module.exports = router;
 
-//CRUD USUARIOS 
+// CRUD USUARIOS 

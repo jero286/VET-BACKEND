@@ -4,6 +4,8 @@ const { obtenerTodosLosUsuariosServicios,
        iniciarSesionServicios,
        actualizarUsuarioPorIdServicios,
        eliminarUsuarioPorIdServicios,
+      recuperarContraseniaUsuarioServices
+    
      } = require("../servicios/usuarios.servicios")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -43,11 +45,31 @@ const eliminarUsuarioPorId = async (req, res) => {
     res.status(statusCode).json({msg})
 }
 
+const recuperarContraseniaUsuario = async (req, res) => {
+  try {
+    const { msg, statusCode, error } = await recuperarContraseniaUsuarioServices(
+      req.body.emailUsuario
+    );
+
+    if (error) {
+      return res.status(statusCode).json({ error });
+    }
+
+    return res.status(statusCode).json({ msg: msg || "Operación exitosa" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+
+
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUnUsuarioPorId,
     crearNuevoUsuario,
     iniciarSesion,
     actualizarUsuarioPorId,
-    eliminarUsuarioPorId
+    eliminarUsuarioPorId,
+   recuperarContraseniaUsuario
 }
