@@ -26,6 +26,14 @@ const vaciar = (req, res) => {
   res.status(200).json({ mensaje: 'Carrito vaciado', carrito: resultado });
 };
 
+const pagarProductoService = async (req,res) => {
+  try {
+    
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
   agregarProducto,
   obtenerProductos,

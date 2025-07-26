@@ -14,4 +14,6 @@ router.delete('/eliminar/:id', carritoController.eliminarProducto);
 // Ruta para vaciar el carrito
 router.delete('/vaciar', carritoController.vaciar);
 
+router.post("/pagarProducto")
+
 module.exports = router;
