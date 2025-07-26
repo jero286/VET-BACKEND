@@ -49,7 +49,7 @@ const pagarProductoService = async (carrito) => {
     };
   } catch (error) {
     return {
-      statusCode: 500,
+      statusCodeError: 500,
       error,
     };
   }
@@ -61,4 +61,5 @@ module.exports = {
   obtenerCarrito,
   eliminarDelCarrito,
   vaciarCarrito,
+  pagarProductoService,
 };

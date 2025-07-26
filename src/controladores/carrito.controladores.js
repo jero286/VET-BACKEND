@@ -28,8 +28,14 @@ const vaciar = (req, res) => {
 
 const pagarProducto = async (req, res) => {
   try {
-  } catch (error) {
-    
+    const { msg, statusCode } = await carritoService.pagarProductoService();
+    res.status(statusCode).json({ msg });
+  } catch {
+    const { statusCodeError, error } =
+      await carritoService.pagarProductoService();
+    res
+      .status(statusCodeError)
+      .json({ msg: "Problema en el servidor:", error });
   }
 };
 
