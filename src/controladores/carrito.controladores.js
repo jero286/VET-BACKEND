@@ -1,10 +1,10 @@
-const carritoService = require('../servicios/carrito.servicios');
+const carritoService = require("../servicios/carrito.servicios");
 
 // POST /carrito/agregar
 const agregarProducto = (req, res) => {
   const producto = req.body;
   const resultado = carritoService.agregarAlCarrito(producto);
-  res.status(201).json({ mensaje: 'Producto agregado', producto: resultado });
+  res.status(201).json({ mensaje: "Producto agregado", producto: resultado });
 };
 
 // GET /carrito
@@ -17,26 +17,26 @@ const obtenerProductos = (req, res) => {
 const eliminarProducto = (req, res) => {
   const { id } = req.params;
   const resultado = carritoService.eliminarDelCarrito(id);
-  res.status(200).json({ mensaje: 'Producto eliminado', carrito: resultado });
+  res.status(200).json({ mensaje: "Producto eliminado", carrito: resultado });
 };
 
 // DELETE /carrito/vaciar
 const vaciar = (req, res) => {
   const resultado = carritoService.vaciarCarrito();
-  res.status(200).json({ mensaje: 'Carrito vaciado', carrito: resultado });
+  res.status(200).json({ mensaje: "Carrito vaciado", carrito: resultado });
 };
 
-const pagarProductoService = async (req,res) => {
+const pagarProducto = async (req, res) => {
   try {
-    
   } catch (error) {
     
   }
-}
+};
 
 module.exports = {
   agregarProducto,
   obtenerProductos,
   eliminarProducto,
-  vaciar
+  vaciar,
+  pagarProducto,
 };
