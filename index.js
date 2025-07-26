@@ -16,7 +16,6 @@ app.use("/productos", require("./src/rutas/productos"))
 app.use("/turnos", require("./src/rutas/turnos"));
 app.use("/usuarios", require("./src/rutas/usuarios"))
 
-
 app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 
 // Carrito
