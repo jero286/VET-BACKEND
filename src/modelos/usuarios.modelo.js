@@ -6,6 +6,11 @@ const UsuarioSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  apellidoUsuario: {
+    required: true,
+    type: String,
+    trim: true,
+  },
   emailUsuario: {
     required: true,
     type: String,
