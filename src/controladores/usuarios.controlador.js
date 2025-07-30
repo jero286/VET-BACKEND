@@ -19,13 +19,14 @@ const obtenerUnUsuarioPorId = async (req, res) => {
 }
 
 const crearNuevoUsuario = async (req, res) => {
-    const {msg, statusCode} = await crearNuevoUsuarioServicios(req.body)
-    try {
-        res.status(statusCode).json({msg})
-    } catch (error) {
-        res.status(statusCode).json({msg})
-    }
-}
+  try {
+    const { msg, statusCode } = await crearNuevoUsuarioServicios(req.body);
+    res.status(statusCode).json({ msg });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error inesperado en el servidor" });
+  }
+};
 
 const iniciarSesion = async (req, res) => {
     const {msg, token, rol, statusCode} = await iniciarSesionServicios(req.body)
