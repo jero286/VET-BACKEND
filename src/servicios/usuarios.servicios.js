@@ -27,11 +27,9 @@ const crearNuevoUsuarioServicios = async (body) => {
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia);
     nuevoUsuario.idCarrito = carritoUsuario._id;
 
-    registroExitoso(body.emailUsuario, body.nombreUsuario);
-
     await nuevoUsuario.save();
     await carritoUsuario.save();
-
+    
     return {
       msg: "Usuario Creado",
       statusCode: 201,
