@@ -1,15 +1,14 @@
-const { transporter } = require("../middlewares/nodemailer.middleware");
+const { transporter } = require("../middlewares/nodemailer.middlewares");
 
 const registroExitoso = async (emailUsuario, nombreUsuario) => {
   try {
     await transporter.sendMail({
       from: `"VetCare" <${process.env.GMAIL_APP_USER}>`,
       to: `${emailUsuario}`,
-      subject: "Registro exitoso ✔",
+      subject: "Te Registraste Exitosamente ✔",
       text: `Gracias por registrarte, ${nombreUsuario}. Bienvenido a VetCare.`,
       html: `
         <h2>¡Bienvenido/a a VetCare, ${nombreUsuario}!</h2>
-        <p>Gracias por registrarte. Tu cuenta ha sido creada exitosamente.</p>
         <p>Ahora podés acceder a nuestros servicios para el cuidado de tu mascota 🐶🐱.</p>
         <p>¡Nos alegra tenerte con nosotros!</p>
         <br/>
@@ -19,17 +18,16 @@ const registroExitoso = async (emailUsuario, nombreUsuario) => {
 
     return {
       msg: "Correo de confirmación enviado correctamente",
-      statusCode: 200,
+      statusCode: 200
     };
   } catch (error) {
-    console.log("Error al enviar el correo de registro:", error);
+    console.log(error)
     return {
-      error: error.message || "Error inesperado al enviar el correo",
-      statusCode: 500,
+      error,
+      statusCode: 500
     };
   }
 };
-
 
 const envioDeLaCompra= async (emailUsuario, nombreProducto)=> {
 try {
@@ -87,3 +85,9 @@ try {
     };
   }
 };
+
+module.exports = {
+  registroExitoso,
+  envioDeLaCompra,
+  recuperarContraseña
+}

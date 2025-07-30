@@ -2,6 +2,7 @@ const UsuariosModelo = require("../modelos/usuarios.modelo");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const ModeloCarrito = require("../modelos/carrito");
+const { registroExitoso } = require("../helpers/mensajes.nodemailer.helpers");
 
 const obtenerTodosLosUsuariosServicios = async () => {
   const usuarios = await UsuariosModelo.find();
@@ -27,13 +28,23 @@ const crearNuevoUsuarioServicios = async (body) => {
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia);
     nuevoUsuario.idCarrito = carritoUsuario._id;
 
+    const {statusCode, error} = await registroExitoso(body.emailUsuario, body.nombreUsuario)
+   
+    if(statusCode === 200){
     await nuevoUsuario.save();
     await carritoUsuario.save();
-    
-    return {
+    console.log(body)
+
+      return {
       msg: "Usuario Creado",
       statusCode: 201,
     };
+  } else{
+    return{
+      error,
+      statusCode
+    }
+   }
   } catch (error) {
     console.log(error);
     return {
