@@ -28,23 +28,26 @@ const crearNuevoUsuarioServicios = async (body) => {
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia);
     nuevoUsuario.idCarrito = carritoUsuario._id;
 
-    const {statusCode, error} = await registroExitoso(body.emailUsuario, body.nombreUsuario)
-   
-    if(statusCode === 200){
-    await nuevoUsuario.save();
-    await carritoUsuario.save();
-    console.log(body)
+    const { statusCode, error } = await registroExitoso(
+      body.emailUsuario,
+      body.nombreUsuario
+    );
+
+    if (statusCode === 200) {
+      await nuevoUsuario.save();
+      await carritoUsuario.save();
+      console.log(body);
 
       return {
-      msg: "Usuario Creado",
-      statusCode: 201,
-    };
-  } else{
-    return{
-      error,
-      statusCode
+        msg: "Usuario Creado",
+        statusCode: 201,
+      };
+    } else {
+      return {
+        error,
+        statusCode,
+      };
     }
-   }
   } catch (error) {
     console.log(error);
     return {
@@ -88,6 +91,8 @@ const iniciarSesionServicios = async (body) => {
   return {
     msg: "Usuario Logueado",
     token,
+    rol: usuarioExiste.rolUsuario,
+    idUsuario: usuarioExiste._id,
     statusCode: 200,
   };
 };

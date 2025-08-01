@@ -1,22 +1,22 @@
-const { obtenerTodosLosUsuariosServicios,
-       obtenerUnUsuarioPorIdServicios,
-       crearNuevoUsuarioServicios,
-       iniciarSesionServicios,
-       actualizarUsuarioPorIdServicios,
-       eliminarUsuarioPorIdServicios,
-      recuperarContraseniaUsuarioServices
-    
-     } = require("../servicios/usuarios.servicios")
+const {
+  obtenerTodosLosUsuariosServicios,
+  obtenerUnUsuarioPorIdServicios,
+  crearNuevoUsuarioServicios,
+  iniciarSesionServicios,
+  actualizarUsuarioPorIdServicios,
+  eliminarUsuarioPorIdServicios,
+  recuperarContraseniaUsuarioServices,
+} = require("../servicios/usuarios.servicios");
 
 const obtenerTodosLosUsuarios = async (req, res) => {
-    const {usuarios, statusCode} = await obtenerTodosLosUsuariosServicios()
-    res.status(statusCode).json({usuarios})
-}
+  const { usuarios, statusCode } = await obtenerTodosLosUsuariosServicios();
+  res.status(statusCode).json({ usuarios });
+};
 
 const obtenerUnUsuarioPorId = async (req, res) => {
-    const {usuario, statusCode} = await obtenerUnUsuarioPorIdServicios()
-    res.status(statusCode). json({usuario})
-}
+  const { usuario, statusCode } = await obtenerUnUsuarioPorIdServicios();
+  res.status(statusCode).json({ usuario });
+};
 
 const crearNuevoUsuario = async (req, res) => {
   try {
@@ -29,28 +29,30 @@ const crearNuevoUsuario = async (req, res) => {
 };
 
 const iniciarSesion = async (req, res) => {
-    const {msg, token, rol, statusCode} = await iniciarSesionServicios(req.body)
-    res.status(statusCode).json({msg, token, rol})
-}
+  const { msg, token, statusCode, rol, idUsuario } =
+    await iniciarSesionServicios(req.body);
+  res.status(statusCode).json({ msg, token, rol, idUsuario });
+};
 
 const actualizarUsuarioPorId = async (req, res) => {
-    const {msg, statusCode} = await actualizarUsuarioPorIdServicios(
-        req.params.id,
-        req.body
-    )
-    res.status(statusCode).json({msg})
-}
+  const { msg, statusCode } = await actualizarUsuarioPorIdServicios(
+    req.params.id,
+    req.body
+  );
+  res.status(statusCode).json({ msg });
+};
 
 const eliminarUsuarioPorId = async (req, res) => {
-    const {msg, statusCode} = await eliminarUsuarioPorIdServicios(req.params.id)
-    res.status(statusCode).json({msg})
-}
+  const { msg, statusCode } = await eliminarUsuarioPorIdServicios(
+    req.params.id
+  );
+  res.status(statusCode).json({ msg });
+};
 
 const recuperarContraseniaUsuario = async (req, res) => {
   try {
-    const { msg, statusCode, error } = await recuperarContraseniaUsuarioServices(
-      req.body.emailUsuario
-    );
+    const { msg, statusCode, error } =
+      await recuperarContraseniaUsuarioServices(req.body.emailUsuario);
 
     if (error) {
       return res.status(statusCode).json({ error });
@@ -63,14 +65,12 @@ const recuperarContraseniaUsuario = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
-    obtenerTodosLosUsuarios,
-    obtenerUnUsuarioPorId,
-    crearNuevoUsuario,
-    iniciarSesion,
-    actualizarUsuarioPorId,
-    eliminarUsuarioPorId,
-   recuperarContraseniaUsuario
-}
+  obtenerTodosLosUsuarios,
+  obtenerUnUsuarioPorId,
+  crearNuevoUsuario,
+  iniciarSesion,
+  actualizarUsuarioPorId,
+  eliminarUsuarioPorId,
+  recuperarContraseniaUsuario,
+};
