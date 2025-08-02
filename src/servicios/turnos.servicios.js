@@ -45,11 +45,18 @@ const actualizarTurnoService = async (idTurno, body) => {
 
 const crearTurnoService = async (body) => {
   try {
-    const nuevoTurno = new turnoModelo(body);
-    const usuario = await usuarioModelo.findOne({_id:body.idUsuario})
-    nuevoTurno.idUsuario = usuario._id;
+    const usuario = await usuarioModelo.findOne({ _id: body.idUsuario });
+    console.log("Usuario encontrado:", usuario);
+    const nuevoTurno = new turnoModelo({
+      detalle: body.detalle,
+      veterinario: body.veterinario,
+      mascota: body.mascota,
+      fecha: new Date(body.fecha),
+      hora: new Date(`${body.fecha}T${body.hora}`),
+      idUsuario: usuario._id,
+    });
     await nuevoTurno.save();
-    await usuario.save();
+
     return {
       statusCode: 201,
       msg: "Turno creado",
