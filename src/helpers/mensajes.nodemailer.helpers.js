@@ -18,34 +18,30 @@ const registroExitoso = async (emailUsuario, nombreUsuario) => {
 
     return {
       msg: "Correo de confirmación enviado correctamente",
-      statusCode: 200
+      statusCode: 200,
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       error,
-      statusCode: 500
+      statusCode: 500,
     };
   }
 };
 
-const envioDeLaCompra= async (emailUsuario, nombreProducto)=> {
-try {
-    
+const envioDeLaCompra = async (emailUsuario, nombreProducto) => {
+  try {
     await transporter.sendMail({
-    from:` "VetCare" <${process.env.GMAIL_APP_USER}>`,
-    to:`${emailUsuario}` ,
-    subject: `"¡Pago recibido con éxito!"`,
-    text: `Gracias por tu compra. Hemos recibido tu pago por: ${nombreProducto}`, // plain‑text body
-    html: `<h3>Gracias por tu compra 🐶</h3>
+      from: ` "VetCare" <${process.env.GMAIL_APP_USER}>`,
+      to: `${emailUsuario}`,
+      subject: `"¡Pago recibido con éxito!"`,
+      text: `Gracias por tu compra. Hemos recibido tu pago por: ${nombreProducto}`, // plain‑text body
+      html: `<h3>Gracias por tu compra 🐶</h3>
            <p>Tu pago por <b>${nombreProducto}</b> fue procesado con éxito.</p>
-           <p>Pronto recibirás más información sobre el envío.</p>`
-    
-    
-    , // HTML body
-  });
+           <p>Pronto recibirás más información sobre el envío.</p>`, // HTML body
+    });
 
-  return {
+    return {
       msg: "Correo de confirmación de compra enviado correctamente",
       statusCode: 200,
     };
@@ -58,20 +54,16 @@ try {
   }
 };
 
-const recuperarContraseña= async (emailUsuario, token)=> {
-try {
-    
+const recuperarContraseña = async (emailUsuario, token) => {
+  try {
     await transporter.sendMail({
-    from:` "VetCare" <${process.env.GMAIL_APP_USER}>`,
-    to:`${emailUsuario}`,
-    subject: `"Recuperación de contraseña"`,
-    text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`, // plain‑text body
-    html: `<p>Has solicitado recuperar tu contraseña.</p>
-           <p><a href="https://tuapp.com/reset/${token}">Haz clic aquí para restablecerla</a></p>`
-    
-    
-    , // HTML body
-  });
+      from: ` "VetCare" <${process.env.GMAIL_APP_USER}>`,
+      to: `${emailUsuario}`,
+      subject: `"Recuperación de contraseña"`,
+      text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`, // plain‑text body
+      html: `<p>Has solicitado recuperar tu contraseña.</p>
+           <p><a href="https://tuapp.com/reset/${token}">Haz clic aquí para restablecerla</a></p>`, // HTML body
+    });
 
     return {
       msg: "Correo de recuperación enviado correctamente",
@@ -89,5 +81,5 @@ try {
 module.exports = {
   registroExitoso,
   envioDeLaCompra,
-  recuperarContraseña
-}
+  recuperarContraseña,
+};
