@@ -3,6 +3,7 @@ const {
   eliminarTurnoService,
   actualizarTurnoService,
   crearTurnoService,
+  obtenerTurnoDelUsuarioService,
 } = require("../servicios/turnos.servicios");
 
 const obtenerTurnoPorId = async (req, res) => {
@@ -12,6 +13,22 @@ const obtenerTurnoPorId = async (req, res) => {
   } catch {
     const { statusCodeError } = await obtenerTurnoPorIdService(req.params.id);
     res.status(statusCodeError).json({ msg: "Turno no existe" });
+  }
+};
+
+const obtenerTurnoDelUsuario = async (req, res) => {
+  try {
+    const { turnos, statusCode } = await obtenerTurnoDelUsuarioService(
+      req.params.idUsuario
+    );
+    res.status(statusCode).json({ turnos });
+  } catch (error) {
+    const { statusCodeError } = await obtenerTurnoDelUsuarioService(
+      req.params.idUsuario
+    );
+    res
+      .status(statusCodeError)
+      .json({ msg: "No se pudo obtener el turno del usuario" });
   }
 };
 
@@ -62,4 +79,5 @@ module.exports = {
   eliminarTurno,
   actualizarTurno,
   crearTurno,
+  obtenerTurnoDelUsuario,
 };

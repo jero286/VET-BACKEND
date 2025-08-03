@@ -15,6 +15,20 @@ const obtenerTurnoPorIdService = async (idTurno) => {
   }
 };
 
+const obtenerTurnoDelUsuarioService = async (idUsuario) => {
+  try {
+    const turnos = await turnoModelo.find(idUsuario);
+    return {
+      statusCode: 200,
+      turnos,
+    };
+  } catch (error) {
+    return {
+      statusCodeError: 404,
+    };
+  }
+};
+
 const eliminarTurnoService = async (idTurno) => {
   try {
     await turnoModelo.findByIdAndDelete({ _id: idTurno });
@@ -73,4 +87,5 @@ module.exports = {
   eliminarTurnoService,
   actualizarTurnoService,
   crearTurnoService,
+  obtenerTurnoDelUsuarioService,
 };
