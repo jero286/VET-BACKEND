@@ -9,7 +9,7 @@ const {
 const router = express.Router();
 
 router.get("/:id", obtenerTurnoPorId);
-router.get("/:id", obtenerTurnoDelUsuario);
+router.get("/usuarios/:id", obtenerTurnoDelUsuario);
 router.post("/", crearTurno);
 router.put("/:id", actualizarTurno);
 router.delete("/:id", eliminarTurno);
