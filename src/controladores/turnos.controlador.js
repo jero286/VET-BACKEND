@@ -19,12 +19,12 @@ const obtenerTurnoPorId = async (req, res) => {
 const obtenerTurnoDelUsuario = async (req, res) => {
   try {
     const { turnos, statusCode } = await obtenerTurnoDelUsuarioService(
-      req.params.idUsuario
+      req.params.id
     );
     res.status(statusCode).json({ turnos });
   } catch (error) {
     const { statusCodeError } = await obtenerTurnoDelUsuarioService(
-      req.params.idUsuario
+      req.params.id
     );
     res
       .status(statusCodeError)

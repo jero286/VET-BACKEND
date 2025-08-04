@@ -17,7 +17,7 @@ const obtenerTurnoPorIdService = async (idTurno) => {
 
 const obtenerTurnoDelUsuarioService = async (idUsuario) => {
   try {
-    const turnos = await turnoModelo.find(idUsuario);
+    const turnos = await turnoModelo.find({ idUsuario: idUsuario });
     return {
       statusCode: 200,
       turnos,
