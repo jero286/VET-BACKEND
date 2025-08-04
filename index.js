@@ -7,6 +7,7 @@ const cors = require("cors");
 require("./src/mongoDB_config/config");
 
 // Middleware
+const corsOptions = require("./src/helpers/cors.dominioFrontend");
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
@@ -21,5 +22,5 @@ app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 
 // Carrito
 const carritoRoutes = require("./src/rutas/carrito");
-const corsOptions = require("./src/helpers/cors.dominioFrontend");
+
 app.use("/carrito", carritoRoutes);
