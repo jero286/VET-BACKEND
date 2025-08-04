@@ -8,17 +8,18 @@ require("./src/mongoDB_config/config");
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
 
 // Rutas
-app.use("/productos", require("./src/rutas/productos"))
+app.use("/productos", require("./src/rutas/productos"));
 app.use("/turnos", require("./src/rutas/turnos"));
-app.use("/usuarios", require("./src/rutas/usuarios"))
-app.use("/mascotas", require("./src/rutas/mascotas"))
+app.use("/usuarios", require("./src/rutas/usuarios"));
+app.use("/mascotas", require("./src/rutas/mascotas"));
 
 app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 
 // Carrito
-const carritoRoutes = require('./src/rutas/carrito');
-app.use('/carrito', carritoRoutes);
+const carritoRoutes = require("./src/rutas/carrito");
+const corsOptions = require("./src/helpers/cors.dominioFrontend");
+app.use("/carrito", carritoRoutes);
