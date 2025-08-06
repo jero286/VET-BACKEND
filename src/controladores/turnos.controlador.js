@@ -4,8 +4,17 @@ const {
   actualizarTurnoService,
   crearTurnoService,
   obtenerTurnoDelUsuarioService,
+  obtenerTodosLosTurnosService,
 } = require("../servicios/turnos.servicios");
 
+const obtenerTodosLosTurnos = async (req, res) => {
+  try {
+    const {turnos, statusCode } = await obtenerTodosLosTurnosService() 
+    res.status(statusCode).json({turnos})
+  } catch (error) {
+    console.log(error)
+  }
+}
 const obtenerTurnoPorId = async (req, res) => {
   try {
     const { statusCode, msg } = await obtenerTurnoPorIdService(req.params.id);
@@ -80,4 +89,5 @@ module.exports = {
   actualizarTurno,
   crearTurno,
   obtenerTurnoDelUsuario,
+  obtenerTodosLosTurnos
 };

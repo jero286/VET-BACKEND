@@ -1,6 +1,19 @@
 const turnoModelo = require("../modelos/turnos.js");
 const usuarioModelo = require("../modelos/usuarios.modelo.js");
 
+const obtenerTodosLosTurnosService = async () => {
+  try {
+    const turnos = await turnoModelo.find()
+    return{
+      turnos,
+      statusCode: 200
+    }
+  } catch (error) {
+    return{
+      error, statusCodeError: 500
+    }
+  }
+}
 const obtenerTurnoPorIdService = async (idTurno) => {
   try {
     const turno = await turnoModelo.findOne({ _id: idTurno });
@@ -88,4 +101,5 @@ module.exports = {
   actualizarTurnoService,
   crearTurnoService,
   obtenerTurnoDelUsuarioService,
+  obtenerTodosLosTurnosService
 };
