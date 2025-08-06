@@ -1,10 +1,11 @@
-const express = require("express");
+const express = require("express")
 const {
   obtenerTodosLosProductos,
   obtenerProductoPorId,
   crearNuevoProducto,
   actualizarProductoPorId,
   eliminarProductoPorId,
+  crearEditarImagen,
 } = require("../controladores/productos.controlador");
 const router = express.Router();
 const multerMiddleware = require("../middlewares/multer.middleware");
@@ -15,4 +16,4 @@ router.post("/", multerMiddleware.single("imagen"), crearNuevoProducto);
 router.put("/:id", actualizarProductoPorId);
 router.delete("/:id", eliminarProductoPorId);
 
-module.exports = router;
+module.exports = router

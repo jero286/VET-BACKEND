@@ -18,16 +18,41 @@ const obtenerProductoPorIdServicios = async (idProducto) => {
 };
 
 const crearNuevoProductoServicios = async (body, file) => {
-  const nuevoProducto = new ModeloProducto(body);
-  const imgCloud = await cloudinary.uploader.upload(file.path);
-  nuevoProducto.imagen = imgCloud.secure_url;
+  if (!file || !file.path) {
+    throw new Error("No se ha subido ninguna imagen")
+  }
+  const nuevoProducto = new ModeloProducto(body)
+  const imagenCloud = await cloudinary.uploader.upload(file.path)
+  nuevoProducto.imagen = imagenCloud.secure_url
+
   await nuevoProducto.save();
+
   return {
     msg: "Producto Creado",
     idProducto: nuevoProducto._id,
-    statusCode: 201,
-  };
-};
+    statusCode: 201
+  }
+}
+
+const crearEditarImagenServicios = async (idProducto, file) => {
+  try {
+    const producto = await ModeloProducto.findById(idProducto)
+    const imgCloud = await cloudinary.uploader.upload(file.path)
+    producto.imagen = imgCloud.secure_url
+
+    await producto.save()
+    return {
+      msg: "Imagen cargada",
+      statusCode: 200
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      error,
+      statusCode: 500
+    }
+  }
+}
 
 const actualizarProductoPorIdServicios = async (idProducto, body) => {
   await ModeloProducto.findByIdAndUpdate({ _id: idProducto }, body);
@@ -75,6 +100,7 @@ module.exports = {
   obtenerTodosLosProductosServicios,
   obtenerProductoPorIdServicios,
   crearNuevoProductoServicios,
+  crearEditarImagenServicios,
   actualizarProductoPorIdServicios,
   eliminarProductoPorIdServicios,
   cambiarEstadoDeLProductoServicios,
