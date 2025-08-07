@@ -70,9 +70,16 @@ const vaciar = async (req, res) => {
 };
 const pagarProducto = async (req, res) => {
   try {
-    
+    const {} = req.user.id;
+    const { msg, statusCode } = await carritoService.pagarProductoService(
+      idUsuario
+    );
+    res.status(statusCode).json({ init_point: msg });
   } catch (error) {
-    
+    console.error(error);
+    res
+      .status(500)
+      .json({ msg: "Error al generar preferencia de pago", error });
   }
 };
 
