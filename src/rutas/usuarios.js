@@ -7,8 +7,8 @@ const { obtenerTodosLosUsuarios,
        iniciarSesion,
        recuperarContraseniaUsuario,
        cambioDeContraseniaUsuarioToken
-       
-       
+
+
 } = require("../controladores/usuarios.controlador");
 const router = express.Router();
 

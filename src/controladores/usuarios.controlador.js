@@ -6,8 +6,8 @@ const {
   actualizarUsuarioPorIdServicios,
   eliminarUsuarioPorIdServicios,
   recuperarContraseniaUsuarioServices,
-  cambioDeContraseniaUsuarioTokenServices
-  
+  cambioDeContraseniaUsuarioTokenServicios
+
 } = require("../servicios/usuarios.servicios");
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -54,7 +54,7 @@ const eliminarUsuarioPorId = async (req, res) => {
 const recuperarContraseniaUsuario = async (req, res) => {
   try {
     const { msg, statusCode, error } =
-      await recuperarContraseniaUsuarioServices(req.body.email);
+      await recuperarContraseniaUsuarioServices(req.body.emailUsuario);
 
     if (error) {
       return res.status(statusCode).json({ error });
@@ -68,19 +68,16 @@ const recuperarContraseniaUsuario = async (req, res) => {
 };
 
 const cambioDeContraseniaUsuarioToken = async (req, res) => {
+  console.log("token query", req.query)
+  const { msg, statusCode, error } =
+    await cambioDeContraseniaUsuarioTokenServicios(
+      req.query.token,
+      req.body.contrasenia)
   try {
-    const { token, nuevaContrasenia } = req.body;
-
-    const { msg, statusCode, error } = await cambioDeContraseniaUsuarioTokenServices(token, nuevaContrasenia);
-
-    if (error) {
-      return res.status(statusCode).json({ error });
-    }
-
-    return res.status(statusCode).json({ msg });
+    res.status(statusCode).json({ msg })
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Error interno del servidor" });
+    console.error(error)
+    res.status(statusCode).json({ error })
   }
 };
 
