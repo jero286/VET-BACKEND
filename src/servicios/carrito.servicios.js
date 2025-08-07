@@ -44,8 +44,19 @@ const obtenerCarrito = async (idUsuario) => {
 };
 
 // Elimina un producto por su ID
-const eliminarDelCarrito = (id) => {
-  carrito = carrito.filter((item) => item.id !== id);
+const eliminarDelCarrito = async (idUsuario, productoId) => {
+  const carrito = await ModeloCarrito.findOne({ idUsuario });
+
+  if (!carrito) {
+    throw new Error("No se encontró un carrito para este usuario");
+  }
+
+  carrito.productos = carrito.productos.filter(
+    (p) => p.producto.toString() !== productoId
+  );
+
+  await carrito.save();
+
   return carrito;
 };
 
