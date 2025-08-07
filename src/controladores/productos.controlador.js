@@ -5,6 +5,7 @@ const {
   actualizarProductoPorIdServicios,
   eliminarProductoPorIdServicios,
   cambiarEstadoDeLProductoServicios,
+  crearEditarImagenServicios,
 } = require("../servicios/productos.servicios");
 
 const obtenerTodosLosProductos = async (req, res) => {
@@ -19,20 +20,29 @@ const obtenerProductoPorId = async (req, res) => {
   res.status(statusCode).json({ producto });
 };
 
-const crearNuevoProducto = async (req, res) => {
+const crearNuevoProducto = async (req, res, next) => {
   try {
-     if (!req.file) {
-       return res.status(400).json({ msg: "La imagen es obligatoria" });
-     }
-    const { msg, statusCode, idProducto } = await crearNuevoProductoServicios(
-      req.body,
-      req.file
-    );
-    res.status(statusCode).json({ msg, idProducto });
-  } catch {
-    res.status(400).json({msg:"Verifique bien los campos"})
+    if (!req.file) {
+      return res.status(400).json({ msg: "Imagen requerida" })
+    }
+
+    const respuesta = await crearNuevoProductoServicios(req.body, req.file)
+    res.status(respuesta.statusCode).json(respuesta)
+  } catch (error) {
+    next(error)
   }
-};
+}
+
+const crearEditarImagen = async (req, res) => {
+  const { msg, statusCode, error } = await crearEditarImagenServicios(
+    req.params.idProducto
+  )
+  try {
+    res.status(statusCode).json({ msg })
+  } catch (error) {
+    res.status(statusCode).json({ error })
+  }
+}
 
 const actualizarProductoPorId = async (req, res) => {
   const { msg, statusCode } = await actualizarProductoPorIdServicios(
@@ -65,6 +75,7 @@ module.exports = {
   obtenerTodosLosProductos,
   obtenerProductoPorId,
   crearNuevoProducto,
+  crearEditarImagen,
   actualizarProductoPorId,
   eliminarProductoPorId,
   cambiarEstadoDelProducto,
