@@ -1,4 +1,6 @@
 const { MercadoPagoConfig, Preference } = require("mercadopago");
+const modeloCarrito = require("../modelos/carrito")
+const modeloProducto = require("../modelos/productos")
 
 let carrito = [];
 
