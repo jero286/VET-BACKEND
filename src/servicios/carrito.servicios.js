@@ -45,7 +45,7 @@ const obtenerCarrito = async (idUsuario) => {
 
 // Elimina un producto por su ID
 const eliminarDelCarrito = async (idUsuario, productoId) => {
-  const carrito = await ModeloCarrito.findOne({ idUsuario });
+  const carrito = await modeloCarrito.findOne({ idUsuario });
 
   if (!carrito) {
     throw new Error("No se encontró un carrito para este usuario");
@@ -61,8 +61,16 @@ const eliminarDelCarrito = async (idUsuario, productoId) => {
 };
 
 // Vacía completamente el carrito
-const vaciarCarrito = () => {
-  carrito = [];
+const vaciarCarrito = async (idUsuario) => {
+  const carrito = await modeloCarrito.findOne({ idUsuario });
+
+  if (!carrito) {
+    throw new Error("No se encontró un carrito para este usuario");
+  }
+
+  carrito.productos = [];
+  await carrito.save();
+
   return carrito;
 };
 
