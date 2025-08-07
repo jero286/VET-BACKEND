@@ -74,30 +74,51 @@ const vaciarCarrito = async (idUsuario) => {
   return carrito;
 };
 
-const pagarProductoService = async (carrito) => {
+const pagarProductoService = async (idUsuario) => {
   try {
+    const carrito = await modeloCarrito
+      .findOne({ idUsuario })
+      .populate("productos.producto");
+
+    if (!carrito || carrito.productos.length === 0) {
+      return {
+        msg: "El carrito está vacío o no existe",
+        statusCode: 400,
+      };
+    }
+
+    const items = carrito.productos.map((item) => ({
+      title: item.producto.nombre,
+      quantity: item.cantidad,
+      unit_price: item.producto.precio,
+      currency_id: "ARS",
+    }));
+
     const permisoDelServidorAMercadoPago = new MercadoPagoConfig({
       accessToken: `${process.env.MP_ACCESS_TOKEN}`,
     });
-
     const preference = new Preference(permisoDelServidorAMercadoPago);
 
-    const res = preference.create({
+    const res = await preference.create({
       body: {
-        items: [{ title, quantity, unit_price, currency_id }],
+        items,
         back_urls: {
-          success,
-          pending,
-          failure,
+          success: "http://localhost:5173/pago-exitoso",
+          pending: "http://localhost:5173/pago-pendiente",
+          failure: "http://localhost:5173/pago-fallido",
         },
+        auto_return: "approved",
       },
     });
+
     return {
-      msg: (await res).init_point,
+      msg: res.init_point,
       statusCode: 200,
     };
   } catch (error) {
+    console.error(error);
     return {
+      msg: "Error al generar preferencia de pago",
       statusCodeError: 500,
       error,
     };
