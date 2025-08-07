@@ -4,12 +4,12 @@ const usuarioModelo = require("../modelos/usuarios.modelo.js");
 const obtenerTodosLosTurnosService = async () => {
   try {
     const turnos = await turnoModelo.find()
-    return{
+    return {
       turnos,
       statusCode: 200
     }
   } catch (error) {
-    return{
+    return {
       error, statusCodeError: 500
     }
   }
@@ -58,14 +58,26 @@ const eliminarTurnoService = async (idTurno) => {
 
 const actualizarTurnoService = async (idTurno, body) => {
   try {
-    await turnoModelo.findByIdAndUpdate({ _id: idTurno }, body);
+    const turnoActualizado = await turnoModelo.findByIdAndUpdate(idTurno, body, {
+      new: true,
+    });
+
+    if (!turnoActualizado) {
+      return {
+        statusCode: 404,
+        msg: "Turno no encontrado",
+      };
+    }
+
     return {
       statusCode: 200,
-      msg: "Turno actualizado",
+      msg: "Turno actualizado con éxito",
     };
-  } catch {
+  } catch (error) {
+    console.error("Error en actualizarTurnoService:", error);
     return {
-      statusCodeError: 404,
+      statusCode: 500,
+      msg: "Error al actualizar el turno",
     };
   }
 };
