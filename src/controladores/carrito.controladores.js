@@ -2,9 +2,28 @@ const carritoService = require("../servicios/carrito.servicios");
 
 // POST /carrito/agregar
 const agregarProducto = async (req, res) => {
-  const producto = req.body;
-  const resultado = await carritoService.agregarAlCarrito(producto);
-  res.status(201).json({ mensaje: "Producto agregado", producto: resultado });
+  try {
+    const idUsuario = req.user.id;
+    const { cantidad, productoId } = req.body;
+    if (!productoId || !cantidad) {
+      return res
+        .status(400)
+        .json({ msg: "Faltan datos: productoId o cantidad" });
+    }
+    const resultado = await carritoService.agregarAlCarrito(
+      idUsuario,
+      productoId,
+      cantidad
+    );
+    res
+      .status(201)
+      .json({ mensaje: "Producto agregado al carrito", carrito: resultado });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ msg: "Error al agregar producto al carrito", error });
+  }
 };
 
 // GET /carrito
