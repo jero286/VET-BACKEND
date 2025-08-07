@@ -1,13 +1,32 @@
 const { MercadoPagoConfig, Preference } = require("mercadopago");
-const modeloCarrito = require("../modelos/carrito")
-const modeloProducto = require("../modelos/productos")
-
-let carrito = [];
+const modeloCarrito = require("../modelos/carrito");
+const modeloProducto = require("../modelos/productos");
 
 // Agrega un producto al carrito
-const agregarAlCarrito = (producto) => {
-  carrito.push(producto);
-  return producto;
+const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
+  const productoExiste = await modeloProducto.findById(productoId);
+  if (!productoExiste) {
+    throw new Error("El producto no existe");
+  }
+  const carrito = await modeloCarrito.findOne({ idUsuario });
+  if (!carrito) {
+    carrito = new modeloCarrito({
+      idUsuario,
+      productos: [{ producto: productoId, cantidad }],
+    });
+  } else {
+    const productoEnCarrito = carrito.productos.find(
+      (prod) => prod.producto.toString() === productoId
+    );
+    if (productoEnCarrito) {
+      productoEnCarrito.cantidad += cantidad;
+    } else {
+      carrito.productos.push({ producto: productoId, cantidad });
+    }
+  }
+
+  await carrito.save();
+  return carrito;
 };
 
 // Devuelve todos los productos del carrito
