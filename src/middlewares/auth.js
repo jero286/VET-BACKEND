@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
+  console.log("HEADERS:", req.headers); // 👈 Esto ayuda a depurar
   const token = req.headers["auth"];
 
   if (!token) {
