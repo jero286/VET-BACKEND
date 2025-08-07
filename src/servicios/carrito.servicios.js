@@ -30,7 +30,16 @@ const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
 };
 
 // Devuelve todos los productos del carrito
-const obtenerCarrito = () => {
+const obtenerCarrito = async (idUsuario) => {
+  const carrito = await modeloCarrito
+    .findOne({ idUsuario })
+    .populate("productos.producto");
+  if (!carrito) {
+    return {
+      productos: [],
+      msg: "Carrito vacío",
+    };
+  }
   return carrito;
 };
 
