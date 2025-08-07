@@ -28,33 +28,51 @@ const agregarProducto = async (req, res) => {
 
 // GET /carrito
 const obtenerProductos = async (req, res) => {
-  const items = await carritoService.obtenerCarrito();
-  res.status(200).json(items);
+  try {
+    const idUsuario = req.user.id;
+    const carrito = await carritoService.obtenerCarrito(idUsuario);
+    res.status(200).json(carrito);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener el carrito", error });
+  }
 };
 
 // DELETE /carrito/eliminar/:id
 const eliminarProducto = async (req, res) => {
-  const { id } = req.params;
-  const resultado = await carritoService.eliminarDelCarrito(id);
-  res.status(200).json({ mensaje: "Producto eliminado", carrito: resultado });
+  try {
+    const idUsuario = req.user.id;
+    const productoId = req.params.id;
+
+    const carrito = await carritoService.eliminarDelCarrito(
+      idUsuario,
+      productoId
+    );
+    res
+      .status(200)
+      .json({ mensaje: "Producto eliminado del carrito", carrito });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al eliminar producto", error });
+  }
 };
 
 // DELETE /carrito/vaciar
 const vaciar = async (req, res) => {
-  const resultado = await carritoService.vaciarCarrito();
-  res.status(200).json({ mensaje: "Carrito vaciado", carrito: resultado });
+  try {
+    const idUsuario = req.user.id;
+    const carrito = await carritoService.vaciarCarrito(idUsuario);
+    res.status(200).json({ mensaje: "Carrito vaciado", carrito });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al vaciar carrito", error });
+  }
 };
-
 const pagarProducto = async (req, res) => {
   try {
-    const { msg, statusCode } = await carritoService.pagarProductoService();
-    res.status(statusCode).json({ msg });
-  } catch {
-    const { statusCodeError, error } =
-      await carritoService.pagarProductoService();
-    res
-      .status(statusCodeError)
-      .json({ msg: "Problema en el servidor:", error });
+    
+  } catch (error) {
+    
   }
 };
 

@@ -119,8 +119,6 @@ const pagarProductoService = async (idUsuario) => {
     console.error(error);
     return {
       msg: "Error al generar preferencia de pago",
-      statusCodeError: 500,
-      error,
     };
   }
 };
