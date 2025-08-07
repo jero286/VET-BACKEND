@@ -32,3 +32,7 @@ app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
 const carritoRoutes = require("./src/rutas/carrito");
 
 app.use("/carrito", carritoRoutes);
+
+// contacto
+const rutaContacto = require('./rutas/contacto');
+app.use('/api', rutaContacto);
