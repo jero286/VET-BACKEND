@@ -1,6 +1,19 @@
 const turnoModelo = require("../modelos/turnos.js");
 const usuarioModelo = require("../modelos/usuarios.modelo.js");
 
+const obtenerTodosLosTurnosService = async () => {
+  try {
+    const turnos = await turnoModelo.find()
+    return {
+      turnos,
+      statusCode: 200
+    }
+  } catch (error) {
+    return {
+      error, statusCodeError: 500
+    }
+  }
+}
 const obtenerTurnoPorIdService = async (idTurno) => {
   try {
     const turno = await turnoModelo.findOne({ _id: idTurno });
@@ -9,6 +22,20 @@ const obtenerTurnoPorIdService = async (idTurno) => {
       msg: turno,
     };
   } catch {
+    return {
+      statusCodeError: 404,
+    };
+  }
+};
+
+const obtenerTurnoDelUsuarioService = async (idUsuario) => {
+  try {
+    const turnos = await turnoModelo.find({ idUsuario: idUsuario });
+    return {
+      statusCode: 200,
+      turnos,
+    };
+  } catch (error) {
     return {
       statusCodeError: 404,
     };
@@ -31,14 +58,26 @@ const eliminarTurnoService = async (idTurno) => {
 
 const actualizarTurnoService = async (idTurno, body) => {
   try {
-    await turnoModelo.findByIdAndUpdate({ _id: idTurno }, body);
+    const turnoActualizado = await turnoModelo.findByIdAndUpdate(idTurno, body, {
+      new: true,
+    });
+
+    if (!turnoActualizado) {
+      return {
+        statusCode: 404,
+        msg: "Turno no encontrado",
+      };
+    }
+
     return {
       statusCode: 200,
-      msg: "Turno actualizado",
+      msg: "Turno actualizado con éxito",
     };
-  } catch {
+  } catch (error) {
+    console.error("Error en actualizarTurnoService:", error);
     return {
-      statusCodeError: 404,
+      statusCode: 500,
+      msg: "Error al actualizar el turno",
     };
   }
 };
@@ -73,4 +112,6 @@ module.exports = {
   eliminarTurnoService,
   actualizarTurnoService,
   crearTurnoService,
+  obtenerTurnoDelUsuarioService,
+  obtenerTodosLosTurnosService
 };
