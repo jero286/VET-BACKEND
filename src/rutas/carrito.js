@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const carritoController = require("../controladores/carrito.controladores");
+const authMiddleware = require("../middlewares/auth");
 
 // Ruta para agregar producto al carrito
+router.use(authMiddleware);
+
 router.post("/agregar", carritoController.agregarProducto);
 
 // Ruta para obtener todo el carrito
