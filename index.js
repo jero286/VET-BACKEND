@@ -17,10 +17,8 @@ app.use("/productos", require("./src/rutas/productos"));
 app.use("/turnos", require("./src/rutas/turnos"));
 app.use("/usuarios", require("./src/rutas/usuarios"));
 app.use("/mascotas", require("./src/rutas/mascotas"));
-
-app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
-
-// Carrito
 const carritoRoutes = require("./src/rutas/carrito");
 
 app.use("/carrito", carritoRoutes);
+
+app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
