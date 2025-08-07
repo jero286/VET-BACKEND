@@ -1,14 +1,25 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (rolUsuario) => (req, res, next) => {
-  const token = req.header("auth");
-  const usuarioVerificado = jwt.verify(token, process.env.JWT_SECRET);
-  if (rolUsuario === usuarioVerificado.rol) {
-    req.idUsuario = usuarioVerificado.idUsuario;
-    req.idCarrito = usuarioVerificado.idCarrito;
-    req.idTurno = usuarioVerificado.idTurno;
+const authMiddleware = (req, res, next) => {
+  const token = req.headers["auth"];
+
+  if (!token) {
+    return res.status(401).json({ msg: "Token no proporcionado" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Inyectamos info útil en req.user
+    req.user = {
+      id: decoded.idUsuario,
+      rol: decoded.rol,
+    };
+
     next();
-  } else {
-    res.status(401).json({ msg: "No estás autorizado" });
+  } catch (error) {
+    return res.status(403).json({ msg: "Token inválido o expirado", error });
   }
 };
+
+module.exports = authMiddleware;
