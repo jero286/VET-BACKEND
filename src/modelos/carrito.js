@@ -2,10 +2,23 @@ const mongoose = require("mongoose");
 
 const CarritoSchema = new mongoose.Schema({
   idUsuario: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    unique: true,
   },
-  productos: [],
+  productos: {
+    producto: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "productos",
+      required: true,
+    },
+    cantidad: {
+      type: Number,
+      required: true,
+      default: 1,
+      min: 1,
+    },
+  },
   planMascota: [],
 });
 
