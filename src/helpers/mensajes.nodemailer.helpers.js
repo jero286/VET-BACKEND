@@ -62,7 +62,7 @@ const recuperarContraseña = async (emailUsuario, token) => {
       subject: `"Recuperación de contraseña"`,
       text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`, // plain‑text body
       html: `<p>Has solicitado recuperar tu contraseña.</p>
-           <p><a href="https://tuapp.com/reset/${token}">Haz clic aquí para restablecerla</a></p>`, // HTML body
+           <p><a href="https://localhost:5173/recoveryPassForm?token=${token}">Haz clic aquí para restablecerla</a></p>`, // HTML body
     });
 
     return {
