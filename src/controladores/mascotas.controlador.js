@@ -17,7 +17,7 @@ const obtenerMascotaPorId = async (req, res) => {
 const crearNuevaMascota = async (req, res) => {
     const {msg, statusCode} = await crearNuevaMascotaServicios(
         req.body,
-        req.user.id
+        req.usuario._id
     )
     res.status(statusCode).json({msg})
 }

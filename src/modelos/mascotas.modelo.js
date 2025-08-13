@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 
 const MascotaSchema = new mongoose.Schema({
-idUsuario: {
-    type: String,
-    ref: 'Usuario',
+usuario: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'usuarios',
     required: true
 },
 nombre: {
@@ -30,8 +30,7 @@ sexo: {
     type: String,
     trim: true,
     enum: ['macho', 'hembra']
-},
-mascotas: []
+}
 })
 
 const MascotasModelo = mongoose.model("mascotas", MascotaSchema)
