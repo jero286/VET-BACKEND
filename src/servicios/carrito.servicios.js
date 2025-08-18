@@ -8,7 +8,7 @@ const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
   if (!productoExiste) {
     throw new Error("El producto no existe");
   }
-  const carrito = await modeloCarrito.findOne({ idUsuario });
+  let carrito = await modeloCarrito.findOne({ idUsuario });
   if (!carrito) {
     carrito = new modeloCarrito({
       idUsuario,

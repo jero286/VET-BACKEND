@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
   console.log("HEADERS:", req.headers); // 👈 Esto ayuda a depurar
-  const token = req.headers["auth"];
+  const Authtoken = req.headers["auth"];
 
-  if (!token) {
+  if (!Authtoken) {
     return res.status(401).json({ msg: "Token no proporcionado" });
   }
 
@@ -18,8 +18,8 @@ const authMiddleware = (req, res, next) => {
     };
 
     next();
-  } catch (error) {
-    return res.status(403).json({ msg: "Token inválido o expirado", error });
+  } catch {
+    return res.status(403).json({ msg: "Token inválido o expirado" });
   }
 };
 

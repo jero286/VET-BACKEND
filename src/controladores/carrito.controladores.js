@@ -17,7 +17,7 @@ const agregarProducto = async (req, res) => {
     );
     res
       .status(201)
-      .json({ mensaje: "Producto agregado al carrito", carrito: resultado });
+      .json({ msg: "Producto agregado al carrito", carrito: resultado });
   } catch (error) {
     console.error(error);
     res
@@ -70,7 +70,7 @@ const vaciar = async (req, res) => {
 };
 const pagarProducto = async (req, res) => {
   try {
-    const {} = req.user.id;
+    const idUsuario = req.user.id;
     const { msg, statusCode } = await carritoService.pagarProductoService(
       idUsuario
     );
