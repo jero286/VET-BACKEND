@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const MascotaSchema = new mongoose.Schema({
-usuario: {
+dueño: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'usuarios',
     required: true

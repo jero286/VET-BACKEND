@@ -5,8 +5,8 @@ module.exports = (rolUsuario) => (req, res, next) => {
   const usuarioVerificado = jwt.verify(token, process.env.JWT_SECRET);
   if (rolUsuario === usuarioVerificado.rol) {
     req.usuario = {
-      _id: usuarioVerificado.idUsuario,
-      rol: usuarioVerificado.rolUsuario,
+      idUsuario: usuarioVerificado.idUsuario,
+      rol: usuarioVerificado.rol,
       idCarrito: usuarioVerificado.idCarrito,
       idTurno: usuarioVerificado.idTurno 
     }
