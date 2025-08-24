@@ -103,22 +103,23 @@ const pagarProductoService = async (idUsuario) => {
       body: {
         items,
         back_urls: {
-          success: "http://localhost:5173/pago-exitoso",
-          pending: "http://localhost:5173/pago-pendiente",
-          failure: "http://localhost:5173/pago-fallido",
+          success: "http://localhost:5173/pagoExitoso",
+          pending: "http://localhost:5173/pagoPendiente",
+          failure: "http://localhost:5173/pagoFallido",
         },
         auto_return: "approved",
       },
     });
 
     return {
-      msg: res.init_point,
+      init_point: res.init_point,
       statusCode: 200,
     };
   } catch (error) {
     console.error(error);
     return {
       msg: "Error al generar preferencia de pago",
+      statusCode: 500,
     };
   }
 };

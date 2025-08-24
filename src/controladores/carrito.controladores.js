@@ -71,10 +71,9 @@ const vaciar = async (req, res) => {
 const pagarProducto = async (req, res) => {
   try {
     const idUsuario = req.user.id;
-    const { msg, statusCode } = await carritoService.pagarProductoService(
-      idUsuario
-    );
-    res.status(statusCode).json({ init_point: msg });
+    const { init_point, statusCode } =
+      await carritoService.pagarProductoService(idUsuario);
+    res.status(statusCode).json({ init_point });
   } catch (error) {
     console.error(error);
     res
