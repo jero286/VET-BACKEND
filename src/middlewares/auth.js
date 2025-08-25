@@ -1,26 +1,27 @@
 const jwt = require("jsonwebtoken");
 
-const authMiddleware = (req, res, next) => {
-  console.log("HEADERS:", req.headers); // 👈 Esto ayuda a depurar
-  const Authtoken = req.headers["auth"];
+const auth = (rol) => {
+  return (req, res, next) => {
+    const token = req.headers["authorization"]; // usar header estándar
+    if (!token) {
+      return res.status(401).json({ msg: "Falta token" });
+    }
 
-  if (!Authtoken) {
-    return res.status(401).json({ msg: "Token no proporcionado" });
-  }
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded; // 👈 aquí guardamos el usuario
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Si quieres validar el rol
+      if (rol && decoded.rol !== rol) {
+        return res.status(403).json({ msg: "No autorizado" });
+      }
 
-    // Inyectamos info útil en req.user
-    req.user = {
-      id: decoded.idUsuario,
-      rol: decoded.rol,
-    };
-
-    next();
-  } catch {
-    return res.status(403).json({ msg: "Token inválido o expirado" });
-  }
+      next();
+    } catch (error) {
+      return res.status(401).json({ msg: "Token inválido" });
+    }
+  };
 };
 
-module.exports = authMiddleware;
+module.exports = auth;
+

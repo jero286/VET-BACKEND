@@ -29,12 +29,12 @@ const agregarProducto = async (req, res) => {
 // GET /carrito
 const obtenerProductos = async (req, res) => {
   try {
-    const idUsuario = req.user.id;
-    const carrito = await carritoService.obtenerCarrito(idUsuario);
-    res.status(200).json(carrito);
+    const idUsuario = req.user.id; // 👈 asegurado porque lo pusimos en auth
+    const carrito = await obtenerCarrito(idUsuario);
+    res.json(carrito);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Error al obtener el carrito", error });
+    console.error("Error en obtenerProductos:", error.message);
+    res.status(500).json({ msg: "Error en servidor" });
   }
 };
 

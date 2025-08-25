@@ -29,18 +29,24 @@ const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
   return carrito;
 };
 
-// Devuelve todos los productos del carrito
 const obtenerCarrito = async (idUsuario) => {
-  const carrito = await modeloCarrito
-    .findOne({ idUsuario })
-    .populate("productos.producto");
-  if (!carrito) {
-    return {
-      productos: [],
-      msg: "Carrito vacío",
-    };
+  try {
+    console.log("ID recibido en obtenerCarrito:", idUsuario);
+
+    const carrito = await modeloCarrito
+      .findOne({ idUsuario })
+      .populate({ path: "productos.producto", model: "productos" });
+
+    if (!carrito) {
+      console.log("No se encontró carrito para usuario:", idUsuario);
+      return { productos: [], msg: "Carrito vacío" };
+    }
+
+    return carrito;
+  } catch (error) {
+    console.error("Error en obtenerCarrito:", error);
+    throw error;
   }
-  return carrito;
 };
 
 // Elimina un producto por su ID

@@ -1,16 +1,18 @@
-const express = require("express")
-const { obtenerTodasLasMascotas,
-       obtenerMascotaPorId,
-       crearNuevaMascota,
-       actualizarMascotaPorId,
-       eliminarMascotaPorId, } = require("../controladores/mascotas.controlador")
-const auth = require("../middlewares/auth")
-const router = express.Router()
+const express = require("express");
+const {
+  obtenerTodasLasMascotas,
+  obtenerMascotaPorId,
+  crearNuevaMascota,
+  actualizarMascotaPorId,
+  eliminarMascotaPorId,
+} = require("../controladores/mascotas.controlador");
 
-router.get("/", auth("usuario"), obtenerTodasLasMascotas)
-router.get("/:id", auth("usuario"), obtenerMascotaPorId)
-router.post("/", auth("usuario"), crearNuevaMascota)
-router.put("/:id", auth("usuario"), actualizarMascotaPorId)
-router.delete("/:id", auth("usuario"), eliminarMascotaPorId)
+const router = express.Router();
 
-module.exports = router
+router.get("/", obtenerTodasLasMascotas);
+router.get("/:id", obtenerMascotaPorId);
+router.post("/", crearNuevaMascota);
+router.put("/:id", actualizarMascotaPorId);
+router.delete("/:id", eliminarMascotaPorId);
+
+module.exports = router;
