@@ -1,5 +1,8 @@
-const Consulta = require("../modelos/consulta");
 
+const Consulta = require("../modelos/consulta"); 
+const nodemailer = require("nodemailer");
+
+// Crear una nueva consulta y enviar por email
 const crearConsultaController = async (req, res) => {
   const { nombre, email, mensaje, plan } = req.body;
 
@@ -8,17 +11,40 @@ const crearConsultaController = async (req, res) => {
   }
 
   try {
+    // Guardar en la base
     const nuevaConsulta = new Consulta({ nombre, email, mensaje, plan });
     await nuevaConsulta.save();
 
-    console.log("Consulta guardada en la base de datos:", nuevaConsulta);
-    res.status(201).json({ mensaje: "Consulta enviada correctamente" });
+    // Configurar el transporte de correo
+   const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_APP_USER, 
+        pass: process.env.GMAIL_APP_PASS, 
+      },
+    });
+
+    // Enviar el correo
+    await transporter.sendMail({
+      from: `"Veterinaria" <${process.env.EMAIL_USER}>`,
+      to: "galindotamara88@gmail.com", 
+      subject: `Nueva consulta del plan ${plan}`,
+      text: `
+        Nombre: ${nombre}
+        Email: ${email}
+        Plan: ${plan}
+        Mensaje: ${mensaje}
+      `,
+    });
+
+    res.status(201).json({ mensaje: "Consulta enviada y notificada por email" });
   } catch (error) {
-    console.error("Error al guardar la consulta:", error);
-    res.status(500).json({ error: "Error al guardar la consulta" });
+    console.error("Error al guardar o enviar correo:", error);
+    res.status(500).json({ error: "Error al guardar la consulta o enviar correo" });
   }
 };
 
+// Obtener todas las consultas
 const obtenerConsultasController = async (req, res) => {
   try {
     const consultas = await Consulta.find();
@@ -34,5 +60,3 @@ module.exports = {
   crearConsultaController,
   obtenerConsultasController,
 };
-
-
