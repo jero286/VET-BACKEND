@@ -1,6 +1,5 @@
 const carritoService = require("../servicios/carrito.servicios");
 
-// POST /carrito/agregar
 const agregarProducto = async (req, res) => {
   try {
     const idUsuario = req.user.id;
@@ -26,10 +25,10 @@ const agregarProducto = async (req, res) => {
   }
 };
 
-// GET /carrito
 const obtenerProductos = async (req, res) => {
   try {
-    const idUsuario = req.user.id; // 👈 asegurado porque lo pusimos en auth
+    if (!req.user) return res.status(401).json({ msg: "No autenticado" });
+    const idUsuario = req.user.id;
     const carrito = await obtenerCarrito(idUsuario);
     res.json(carrito);
   } catch (error) {
@@ -38,7 +37,6 @@ const obtenerProductos = async (req, res) => {
   }
 };
 
-// DELETE /carrito/eliminar/:id
 const eliminarProducto = async (req, res) => {
   try {
     const idUsuario = req.user.id;
@@ -57,7 +55,6 @@ const eliminarProducto = async (req, res) => {
   }
 };
 
-// DELETE /carrito/vaciar
 const vaciar = async (req, res) => {
   try {
     const idUsuario = req.user.id;
