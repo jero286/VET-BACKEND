@@ -86,7 +86,7 @@ const iniciarSesionServicios = async (body) => {
     rol: usuarioExiste.rolUsuario,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
 
   return {
     msg: "Usuario Logueado",
@@ -98,12 +98,27 @@ const iniciarSesionServicios = async (body) => {
 };
 
 const actualizarUsuarioPorIdServicios = async (idUsuario, body) => {
-  await UsuariosModelo.findByIdAndUpdate({ _id: idUsuario }, body);
+  try {
+  const usuarioActualizado =  await UsuariosModelo.findByIdAndUpdate(idUsuario, body);
+  if (!usuarioActualizado){
+    return{
+      msg: "Usuario no encontrado",
+      statusCode: 404
+    }
+  }
 
   return {
     msg: "Usuario editado con exito",
     statusCode: 200,
+    data: usuarioActualizado
   };
+  } catch (error) {
+    console.error("Error al actualizar usuario", error)
+    return{
+      msg: "Error en el servidor",
+      statusCode: 500
+    }
+  }
 };
 
 const eliminarUsuarioPorIdServicios = async (idUsuario) => {

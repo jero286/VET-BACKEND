@@ -34,5 +34,5 @@ const carritoRoutes = require("./src/rutas/carrito");
 app.use("/carrito", carritoRoutes);
 
 // contacto
-const rutaContacto = require('./rutas/contacto');
+const rutaContacto = require('./src/rutas/contacto');
 app.use('/api', rutaContacto);
