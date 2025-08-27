@@ -36,3 +36,4 @@ app.use("/carrito", carritoRoutes);
 // contacto
 const rutaContacto = require('./src/rutas/contacto');
 app.use('/api', rutaContacto);
+app.use(express.json());
