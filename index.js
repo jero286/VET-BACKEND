@@ -7,10 +7,17 @@ const cors = require("cors");
 require("./src/mongoDB_config/config");
 
 // Middleware
-const corsOptions = require("./src/helpers/cors.dominioFrontend");
+//const corsOptions = require("./src/helpers/cors.dominioFrontend");
 app.use(express.json());
-app.use(cors(corsOptions));
-app.use(morgan("dev"));
+//app.use(cors(corsOptions));
+//app.use(morgan("dev"));
+
+//cors 
+
+app.use(cors({
+    origin: "http://localhost:5173",
+}));
+
 
 // Rutas
 app.use("/productos", require("./src/rutas/productos"));
@@ -34,6 +41,6 @@ const carritoRoutes = require("./src/rutas/carrito");
 app.use("/carrito", carritoRoutes);
 
 // contacto
+
 const rutaContacto = require('./src/rutas/contacto');
 app.use('/api', rutaContacto);
-app.use(express.json());

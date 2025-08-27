@@ -26,7 +26,8 @@ const enviarMensaje = async (req, res) => {
 
     // Configuración del mail
     const mailOptions = {
-      from: email, // usuario que completa el formulario
+      from: process.env.GMAIL_APP_USER,
+      replyTo: email,
       to: process.env.GMAIL_APP_USER, // llega al correo real
       subject: `Mensaje de contacto de ${nombre}`,
       text: `Nombre: ${nombre}\nEmail: ${email}\nMensaje: ${mensaje}`,
