@@ -2,7 +2,7 @@ const carritoService = require("../servicios/carrito.servicios");
 
 const agregarProducto = async (req, res) => {
   try {
-    const idUsuario = req.user.id;
+    const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const { cantidad, productoId } = req.body;
     if (!productoId || !cantidad) {
       return res
@@ -27,9 +27,9 @@ const agregarProducto = async (req, res) => {
 
 const obtenerProductos = async (req, res) => {
   try {
-    if (!req.user) return res.status(401).json({ msg: "No autenticado" });
-    const idUsuario = req.user.id;
-    const carrito = await obtenerCarrito(idUsuario);
+    const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
+    if (!idUsuario) return res.status(401).json({ msg: "No autenticado" });
+    const carrito = await carritoService.obtenerCarrito(idUsuario);
     res.json(carrito);
   } catch (error) {
     console.error("Error en obtenerProductos:", error.message);
@@ -39,7 +39,7 @@ const obtenerProductos = async (req, res) => {
 
 const eliminarProducto = async (req, res) => {
   try {
-    const idUsuario = req.user.id;
+    const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const productoId = req.params.id;
 
     const carrito = await carritoService.eliminarDelCarrito(
@@ -57,7 +57,7 @@ const eliminarProducto = async (req, res) => {
 
 const vaciar = async (req, res) => {
   try {
-    const idUsuario = req.user.id;
+    const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const carrito = await carritoService.vaciarCarrito(idUsuario);
     res.status(200).json({ mensaje: "Carrito vaciado", carrito });
   } catch (error) {
@@ -67,7 +67,7 @@ const vaciar = async (req, res) => {
 };
 const pagarProducto = async (req, res) => {
   try {
-    const idUsuario = req.user.id;
+    const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const { init_point, statusCode } =
       await carritoService.pagarProductoService(idUsuario);
     res.status(statusCode).json({ init_point });
