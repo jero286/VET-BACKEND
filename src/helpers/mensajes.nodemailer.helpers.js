@@ -54,7 +54,7 @@ const envioDeLaCompra = async (emailUsuario, nombreProducto) => {
   }
 };
 
-const recuperarContraseña = async (emailUsuario, token) => {
+const recuperarContrasenia = async (token, emailUsuario) => {
   try {
     await transporter.sendMail({
       from: ` "VetCare" <${process.env.GMAIL_APP_USER}>`,
@@ -62,7 +62,7 @@ const recuperarContraseña = async (emailUsuario, token) => {
       subject: `"Recuperación de contraseña"`,
       text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`, // plain‑text body
       html: `<p>Has solicitado recuperar tu contraseña.</p>
-           <p><a href="https://tuapp.com/reset/${token}">Haz clic aquí para restablecerla</a></p>`, // HTML body
+           <a href="http://localhost:5173/recuperarContraseniaForm?token=${token}">Haz clic aquí para restablecerla</a>`, // HTML body
     });
 
     return {
@@ -81,5 +81,5 @@ const recuperarContraseña = async (emailUsuario, token) => {
 module.exports = {
   registroExitoso,
   envioDeLaCompra,
-  recuperarContraseña,
+  recuperarContrasenia,
 };

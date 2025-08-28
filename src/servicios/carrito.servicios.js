@@ -2,7 +2,7 @@ const { MercadoPagoConfig, Preference } = require("mercadopago");
 const modeloCarrito = require("../modelos/carrito");
 const modeloProducto = require("../modelos/productos");
 
-// Agrega un producto al carrito
+
 const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
   const productoExiste = await modeloProducto.findById(productoId);
   if (!productoExiste) {
@@ -49,7 +49,7 @@ const obtenerCarrito = async (idUsuario) => {
   }
 };
 
-// Elimina un producto por su ID
+
 const eliminarDelCarrito = async (idUsuario, productoId) => {
   const carrito = await modeloCarrito.findOne({ idUsuario });
 
@@ -66,7 +66,7 @@ const eliminarDelCarrito = async (idUsuario, productoId) => {
   return carrito;
 };
 
-// Vacía completamente el carrito
+
 const vaciarCarrito = async (idUsuario) => {
   const carrito = await modeloCarrito.findOne({ idUsuario });
 
@@ -130,7 +130,7 @@ const pagarProductoService = async (idUsuario) => {
   }
 };
 
-// Exportamos todas las funciones
+
 module.exports = {
   agregarAlCarrito,
   obtenerCarrito,
