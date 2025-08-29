@@ -2,7 +2,6 @@ const { MercadoPagoConfig, Preference } = require("mercadopago");
 const modeloCarrito = require("../modelos/carrito");
 const modeloProducto = require("../modelos/productos");
 
-
 const agregarAlCarrito = async (idUsuario, productoId, cantidad = 1) => {
   const productoExiste = await modeloProducto.findById(productoId);
   if (!productoExiste) {
@@ -36,6 +35,7 @@ const obtenerCarrito = async (idUsuario) => {
     const carrito = await modeloCarrito
       .findOne({ idUsuario })
       .populate({ path: "productos.producto", model: "productos" });
+    console.log("RESPUESTA /carrito ->", JSON.stringify(carrito, null, 2));
 
     if (!carrito) {
       console.log("No se encontró carrito para usuario:", idUsuario);
@@ -48,7 +48,6 @@ const obtenerCarrito = async (idUsuario) => {
     throw error;
   }
 };
-
 
 const eliminarDelCarrito = async (idUsuario, productoId) => {
   const carrito = await modeloCarrito.findOne({ idUsuario });
@@ -65,7 +64,6 @@ const eliminarDelCarrito = async (idUsuario, productoId) => {
 
   return carrito;
 };
-
 
 const vaciarCarrito = async (idUsuario) => {
   const carrito = await modeloCarrito.findOne({ idUsuario });
@@ -104,16 +102,18 @@ const pagarProductoService = async (idUsuario) => {
       accessToken: `${process.env.MP_ACCESS_TOKEN}`,
     });
     const preference = new Preference(permisoDelServidorAMercadoPago);
+    console.log(preference);
+
+    const backUrls = {
+      success: "https://localhost:5173/pagoExitoso",
+      pending: "https://localhost:5173/pagoPendiente",
+      failure: "https://localhost:5173/pagoFallido",
+    };
 
     const res = await preference.create({
       body: {
         items,
-        back_urls: {
-          success: "http://localhost:5173/pagoExitoso",
-          pending: "http://localhost:5173/pagoPendiente",
-          failure: "http://localhost:5173/pagoFallido",
-        },
-        auto_return: "approved",
+        back_urls: backUrls,
       },
     });
 
@@ -129,7 +129,6 @@ const pagarProductoService = async (idUsuario) => {
     };
   }
 };
-
 
 module.exports = {
   agregarAlCarrito,

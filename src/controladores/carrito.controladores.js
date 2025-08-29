@@ -70,7 +70,8 @@ const pagarProducto = async (req, res) => {
     const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const { init_point, statusCode } =
       await carritoService.pagarProductoService(idUsuario);
-    res.status(statusCode).json({ init_point });
+    if (!init_point)
+      return res.status(statusCode).json({ msg: "Carrito vacío" });
   } catch (error) {
     console.error(error);
     res
