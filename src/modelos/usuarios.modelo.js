@@ -36,9 +36,6 @@ const UsuarioSchema = new mongoose.Schema({
   idCarrito: {
     type: String,
   },
-  idMascotas: {
-    type: String,
-  },
   idTurnos: {
     type: String,
   },
@@ -46,4 +43,4 @@ const UsuarioSchema = new mongoose.Schema({
 
 const UsuariosModelo = mongoose.model("usuarios", UsuarioSchema);
 
-module.exports = UsuariosModelo;
+module.exports = UsuariosModelo

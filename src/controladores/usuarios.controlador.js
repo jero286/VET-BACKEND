@@ -6,6 +6,8 @@ const {
   actualizarUsuarioPorIdServicios,
   eliminarUsuarioPorIdServicios,
   recuperarContraseniaUsuarioServices,
+  cambioDeContraseniaUsuarioTokenServicios
+
 } = require("../servicios/usuarios.servicios");
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -65,6 +67,21 @@ const recuperarContraseniaUsuario = async (req, res) => {
   }
 };
 
+const cambioDeContraseniaUsuarioToken = async (req, res) => {
+  console.log("token query", req.query)
+  const { msg, statusCode, error } =
+    await cambioDeContraseniaUsuarioTokenServicios(
+      req.query.token,
+      req.body.contrasenia)
+  try {
+    res.status(statusCode).json({ msg })
+  } catch (error) {
+    console.error(error)
+    res.status(statusCode).json({ error })
+  }
+};
+
+
 module.exports = {
   obtenerTodosLosUsuarios,
   obtenerUnUsuarioPorId,
@@ -73,4 +90,6 @@ module.exports = {
   actualizarUsuarioPorId,
   eliminarUsuarioPorId,
   recuperarContraseniaUsuario,
+  cambioDeContraseniaUsuarioToken
 };
+
