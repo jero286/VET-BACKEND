@@ -22,8 +22,8 @@ const ConsultaSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minlength,
-    maxlenght,
+    minlength:5,
+    maxlenght:50,
   },
   fechaCreación: {
     type: Date,
