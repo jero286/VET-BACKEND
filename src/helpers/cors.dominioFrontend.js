@@ -1,5 +1,5 @@
 const corsOptions = {
-  origin: ["https://vetfrontend.netlify.app", "http://localhost:5173"],
+  origin: [process.env.FRONTEND_URL_NETLIFY],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization", "auth", "x-access-token"],
 };
