@@ -22,7 +22,7 @@ const carritoRoutes = require("./src/rutas/carrito");
 
 app.use("/carrito", carritoRoutes);
 
-const PORT = process.env.PUERTO || 5000;
+const PORT = process.env.PORT || process.env.PUERTO;
 app.listen(PORT, () => {
   console.log(`Servidor levantado en el puerto: ${PORT}`);
 });
