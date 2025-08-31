@@ -2,7 +2,7 @@
 const Consulta = require("../modelos/consulta"); 
 const nodemailer = require("nodemailer");
 
-// Crear una nueva consulta y enviar por email
+
 const crearConsultaController = async (req, res) => {
   const { nombre, email, mensaje, plan } = req.body;
 
@@ -11,11 +11,11 @@ const crearConsultaController = async (req, res) => {
   }
 
   try {
-    // Guardar en la base
+    
     const nuevaConsulta = new Consulta({ nombre, email, mensaje, plan });
     await nuevaConsulta.save();
 
-    // Configurar el transporte de correo
+   
    const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -24,7 +24,7 @@ const crearConsultaController = async (req, res) => {
       },
     });
 
-    // Enviar el correo
+    
     await transporter.sendMail({
       from: `"Veterinaria" <${process.env.EMAIL_USER}>`,
       to: "galindotamara88@gmail.com", 
@@ -44,7 +44,7 @@ const crearConsultaController = async (req, res) => {
   }
 };
 
-// Obtener todas las consultas
+
 const obtenerConsultasController = async (req, res) => {
   try {
     const consultas = await Consulta.find();
