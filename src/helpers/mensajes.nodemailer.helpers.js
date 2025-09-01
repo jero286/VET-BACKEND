@@ -35,10 +35,10 @@ const envioDeLaCompra = async (emailUsuario, nombreProducto) => {
       from: ` "VetCare" <${process.env.GMAIL_APP_USER}>`,
       to: `${emailUsuario}`,
       subject: `"¡Pago recibido con éxito!"`,
-      text: `Gracias por tu compra. Hemos recibido tu pago por: ${nombreProducto}`, // plain‑text body
+      text: `Gracias por tu compra. Hemos recibido tu pago por: ${nombreProducto}`,
       html: `<h3>Gracias por tu compra 🐶</h3>
            <p>Tu pago por <b>${nombreProducto}</b> fue procesado con éxito.</p>
-           <p>Pronto recibirás más información sobre el envío.</p>`, // HTML body
+           <p>Pronto recibirás más información sobre el envío.</p>`,
     });
 
     return {
@@ -60,9 +60,9 @@ const recuperarContrasenia = async (token, emailUsuario) => {
       from: ` "VetCare" <${process.env.GMAIL_APP_USER}>`,
       to: `${emailUsuario}`,
       subject: `"Recuperación de contraseña"`,
-      text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`, // plain‑text body
+      text: `Has solicitado recuperar tu contraseña. Sigue los pasos que te  indicamos abajo`,
       html: `<p>Has solicitado recuperar tu contraseña.</p>
-           <a href="http://localhost:5173/recuperarContraseniaForm?token=${token}">Haz clic aquí para restablecerla</a>`, // HTML body
+           <a href="http://localhost:5173/recuperarContraseniaForm?token=${token}">Haz clic aquí para restablecerla</a>`,
     });
 
     return {

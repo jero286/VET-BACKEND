@@ -1,4 +1,3 @@
-
 const Consulta = require("../modelos/consulta"); 
 const nodemailer = require("nodemailer");
 

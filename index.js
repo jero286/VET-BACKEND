@@ -13,13 +13,10 @@ app.use(morgan("dev"));
 
 app.use("/productos", require("./src/rutas/productos"));
 app.use("/turnos", require("./src/rutas/turnos"));
-
-// app.use("/api/usuarios", require("./src/rutas/usuarios"));s
 app.use("/usuarios", require("./src/rutas/usuarios"));
 app.use("/mascotas", require("./src/rutas/mascotas"));
 app.use("/api/consultas", require("./src/rutas/consultas"));
 const carritoRoutes = require("./src/rutas/carrito");
-
 app.use("/carrito", carritoRoutes);
 
 const PORT = process.env.PORT || process.env.PUERTO;

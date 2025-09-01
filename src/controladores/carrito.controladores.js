@@ -74,8 +74,6 @@ const pagarProducto = async (req, res) => {
     if (!init_point) {
       return res.status(statusCode || 400).json({ msg: "Carrito vacío" });
     }
-
-    // FALTA ESTA LÍNEA:
     res.status(statusCode).json({ init_point });
   } catch (error) {
     console.error(error);
