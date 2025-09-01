@@ -88,44 +88,58 @@ const pagarProductoService = async (idUsuario) => {
       return {
         msg: "El carrito está vacío o no existe",
         statusCode: 400,
+        init_point: null,
       };
     }
 
-    const items = carrito.productos.map((item) => ({
-      title: item.producto.nombre,
-      quantity: item.cantidad,
-      unit_price: item.producto.precio,
-      currency_id: "ARS",
-    }));
+    // Verifica que el token esté disponible
+    if (!process.env.MP_ACCESS_TOKEN) {
+      console.error("MP_ACCESS_TOKEN no está configurado");
+      return {
+        msg: "Error de configuración de pago",
+        statusCode: 500,
+        init_point: null,
+      };
+    }
 
-    const permisoDelServidorAMercadoPago = new MercadoPagoConfig({
-      accessToken: `${process.env.MP_ACCESS_TOKEN}`,
+    const client = new MercadoPagoConfig({
+      accessToken: process.env.MP_ACCESS_TOKEN,
     });
-    const preference = new Preference(permisoDelServidorAMercadoPago);
-    console.log(preference);
+
+    const preference = new Preference(client);
 
     const backUrls = {
-      success: "https://localhost:5173/pagoExitoso",
-      pending: "https://localhost:5173/pagoPendiente",
-      failure: "https://localhost:5173/pagoFallido",
+      success: "https://veterinariacare.netlify.app/pagoExitoso",
+      pending: "https://veterinariacare.netlify.app/pagoPendiente",
+      failure: "https://veterinariacare.netlify.app/pagoFallido",
     };
 
-    const res = await preference.create({
+    const result = await preference.create({
       body: {
-        items,
+        items: carrito.productos.map((item) => ({
+          title: item.producto.nombre,
+          quantity: item.cantidad,
+          unit_price: item.producto.precio,
+          currency_id: "ARS",
+        })),
         back_urls: backUrls,
+        auto_return: "approved",
       },
     });
 
+    console.log("Preferencia creada:", result);
+
     return {
-      init_point: res.init_point,
+      init_point: result.init_point,
       statusCode: 200,
+      msg: "Preferencia creada exitosamente",
     };
   } catch (error) {
-    console.error(error);
+    console.error("Error en pagarProductoService:", error);
     return {
       msg: "Error al generar preferencia de pago",
       statusCode: 500,
+      init_point: null,
     };
   }
 };

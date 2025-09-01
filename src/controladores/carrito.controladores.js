@@ -70,8 +70,13 @@ const pagarProducto = async (req, res) => {
     const idUsuario = req.user?.idUsuario || req.user?.id || req.user?._id;
     const { init_point, statusCode } =
       await carritoService.pagarProductoService(idUsuario);
-    if (!init_point)
-      return res.status(statusCode).json({ msg: "Carrito vacío" });
+
+    if (!init_point) {
+      return res.status(statusCode || 400).json({ msg: "Carrito vacío" });
+    }
+
+    // FALTA ESTA LÍNEA:
+    res.status(statusCode).json({ init_point });
   } catch (error) {
     console.error(error);
     res
