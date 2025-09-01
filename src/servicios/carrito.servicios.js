@@ -92,7 +92,6 @@ const pagarProductoService = async (idUsuario) => {
       };
     }
 
-    // Verifica que el token esté disponible
     if (!process.env.MP_ACCESS_TOKEN) {
       console.error("MP_ACCESS_TOKEN no está configurado");
       return {
