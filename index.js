@@ -6,8 +6,13 @@ const morgan = require("morgan");
 const cors = require("cors");
 require("./src/mongoDB_config/config");
 
+<<<<<<< HEAD
 // Middleware
 //const corsOptions = require("./src/helpers/cors.dominioFrontend");
+=======
+
+const corsOptions = require("./src/helpers/cors.dominioFrontend");
+>>>>>>> 81df3fd994835f314b11e49ab1591cd257113bf6
 app.use(express.json());
 //app.use(cors(corsOptions));
 //app.use(morgan("dev"));
@@ -19,28 +24,26 @@ app.use(cors({
 }));
 
 
-// Rutas
+
 app.use("/productos", require("./src/rutas/productos"));
 app.use("/turnos", require("./src/rutas/turnos"));
 
 // app.use("/api/usuarios", require("./src/rutas/usuarios"));s
-app.use("/usuarios", require("./src/rutas/usuarios"))
-app.use("/mascotas", require("./src/rutas/mascotas"))
+app.use("/usuarios", require("./src/rutas/usuarios"));
+app.use("/mascotas", require("./src/rutas/mascotas"));
 app.use("/api/consultas", require("./src/rutas/consultas"));
-
-
 
 app.use("/usuarios", require("./src/rutas/usuarios"));
 app.use("/mascotas", require("./src/rutas/mascotas"));
-
-app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
-
-// Carrito
 const carritoRoutes = require("./src/rutas/carrito");
 
 app.use("/carrito", carritoRoutes);
 
+<<<<<<< HEAD
 // contacto
 
 const rutaContacto = require('./src/rutas/contacto');
 app.use('/api', rutaContacto);
+=======
+app.listen(5000, () => console.log("Servidor levantado en el puerto:", 5000));
+>>>>>>> 81df3fd994835f314b11e49ab1591cd257113bf6

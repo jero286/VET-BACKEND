@@ -2,7 +2,10 @@ const UsuariosModelo = require("../modelos/usuarios.modelo");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const ModeloCarrito = require("../modelos/carrito");
-const { registroExitoso, recuperarContrasenia } = require("../helpers/mensajes.nodemailer.helpers");
+const {
+  registroExitoso,
+  recuperarContrasenia,
+} = require("../helpers/mensajes.nodemailer.helpers");
 
 const obtenerTodosLosUsuariosServicios = async () => {
   const usuarios = await UsuariosModelo.find();
@@ -99,25 +102,28 @@ const iniciarSesionServicios = async (body) => {
 
 const actualizarUsuarioPorIdServicios = async (idUsuario, body) => {
   try {
-  const usuarioActualizado =  await UsuariosModelo.findByIdAndUpdate(idUsuario, body);
-  if (!usuarioActualizado){
-    return{
-      msg: "Usuario no encontrado",
-      statusCode: 404
+    const usuarioActualizado = await UsuariosModelo.findByIdAndUpdate(
+      idUsuario,
+      body
+    );
+    if (!usuarioActualizado) {
+      return {
+        msg: "Usuario no encontrado",
+        statusCode: 404,
+      };
     }
-  }
 
-  return {
-    msg: "Usuario editado con exito",
-    statusCode: 200,
-    data: usuarioActualizado
-  };
+    return {
+      msg: "Usuario editado con exito",
+      statusCode: 200,
+      data: usuarioActualizado,
+    };
   } catch (error) {
-    console.error("Error al actualizar usuario", error)
-    return{
+    console.error("Error al actualizar usuario", error);
+    return {
       msg: "Error en el servidor",
-      statusCode: 500
-    }
+      statusCode: 500,
+    };
   }
 };
 
@@ -155,7 +161,7 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
       payload,
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h", // expiración del token, ajusta si querés
+        expiresIn: "1h",
       }
     );
 
@@ -177,24 +183,32 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   }
 };
 
-const cambioDeContraseniaUsuarioTokenServicios = async (token, nuevaContrasenia) => {
+const cambioDeContraseniaUsuarioTokenServicios = async (
+  token,
+  nuevaContrasenia
+) => {
   try {
-    const verificarUsuario = jwt.verify(token, process.env.JWT_SECRET_RECOVERY_PASS)
-    const usuario = await UsuariosModelo.findOne({ _id: verificarUsuario.idUsuario })
+    const verificarUsuario = jwt.verify(
+      token,
+      process.env.JWT_SECRET_RECOVERY_PASS
+    );
+    const usuario = await UsuariosModelo.findOne({
+      _id: verificarUsuario.idUsuario,
+    });
 
-    usuario.contrasenia = await argon.hash(nuevaContrasenia)
-    usuario.save()
+    usuario.contrasenia = await argon.hash(nuevaContrasenia);
+    usuario.save();
     return {
       msg: "Se cambio la contraseña exitosamente",
-      statusCode: 200
-    }
+      statusCode: 200,
+    };
   } catch (error) {
     return {
       error,
-      statusCode: 500
-    }
+      statusCode: 500,
+    };
   }
-}
+};
 
 module.exports = {
   obtenerTodosLosUsuariosServicios,
@@ -204,5 +218,5 @@ module.exports = {
   actualizarUsuarioPorIdServicios,
   eliminarUsuarioPorIdServicios,
   recuperarContraseniaUsuarioServices,
-  cambioDeContraseniaUsuarioTokenServicios
+  cambioDeContraseniaUsuarioTokenServicios,
 };

@@ -16,12 +16,8 @@ router.get("/", obtenerTodosLosUsuarios)
 router.get("/:id", obtenerUnUsuarioPorId);
 router.post("/", crearNuevoUsuario);
 router.post("/login", iniciarSesion);
-
-// Recuperación de contraseña
 router.post("/recoveryPassEmail", recuperarContraseniaUsuario);
 router.post("/changeNewPassUser", cambioDeContraseniaUsuarioToken);
-
-
 router.put("/:id", actualizarUsuarioPorId);
 router.delete("/:id", eliminarUsuarioPorId);
 
@@ -29,4 +25,3 @@ router.delete("/:id", eliminarUsuarioPorId);
 
 module.exports = router;
 
-// CRUD USUARIOS 
