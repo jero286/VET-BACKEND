@@ -5,6 +5,7 @@ const UsuarioSchema = new mongoose.Schema({
     required: true,
     type: String,
     trim: true,
+    unique: true,
   },
   apellidoUsuario: {
     required: true,
