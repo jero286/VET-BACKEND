@@ -3,17 +3,18 @@ const usuarioModelo = require("../modelos/usuarios.modelo.js");
 
 const obtenerTodosLosTurnosService = async () => {
   try {
-    const turnos = await turnoModelo.find()
+    const turnos = await turnoModelo.find();
     return {
       turnos,
-      statusCode: 200
-    }
+      statusCode: 200,
+    };
   } catch (error) {
     return {
-      error, statusCodeError: 500
-    }
+      error,
+      statusCodeError: 500,
+    };
   }
-}
+};
 const obtenerTurnoPorIdService = async (idTurno) => {
   try {
     const turno = await turnoModelo.findOne({ _id: idTurno });
@@ -58,9 +59,13 @@ const eliminarTurnoService = async (idTurno) => {
 
 const actualizarTurnoService = async (idTurno, body) => {
   try {
-    const turnoActualizado = await turnoModelo.findByIdAndUpdate(idTurno, body, {
-      new: true,
-    });
+    const turnoActualizado = await turnoModelo.findByIdAndUpdate(
+      idTurno,
+      body,
+      {
+        new: true,
+      }
+    );
 
     if (!turnoActualizado) {
       return {
@@ -86,21 +91,31 @@ const crearTurnoService = async (body) => {
   try {
     const usuario = await usuarioModelo.findOne({ _id: body.idUsuario });
     console.log("Usuario encontrado:", usuario);
+
+    const fechaParts = body.fecha.split("-");
+    const fechaLocal = new Date(
+      fechaParts[0],
+      fechaParts[1] - 1,
+      fechaParts[2]
+    );
+
     const nuevoTurno = new turnoModelo({
       detalle: body.detalle,
       veterinario: body.veterinario,
       mascota: body.mascota,
-      fecha: new Date(body.fecha),
+      fecha: fechaLocal,
       hora: new Date(`${body.fecha}T${body.hora}`),
       idUsuario: usuario._id,
     });
+
     await nuevoTurno.save();
 
     return {
       statusCode: 201,
       msg: "Turno creado",
     };
-  } catch {
+  } catch (err) {
+    console.error(err);
     return {
       statusCodeError: 400,
     };
@@ -113,5 +128,5 @@ module.exports = {
   actualizarTurnoService,
   crearTurnoService,
   obtenerTurnoDelUsuarioService,
-  obtenerTodosLosTurnosService
+  obtenerTodosLosTurnosService,
 };
