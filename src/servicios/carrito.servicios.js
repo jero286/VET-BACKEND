@@ -84,12 +84,34 @@ const pagarProductoService = async (idUsuario) => {
       .findOne({ idUsuario })
       .populate("productos.producto");
 
-    if (!carrito || carrito.productos.length === 0) {
+    if (!carrito) {
       return {
-        msg: "El carrito está vacío o no existe",
+        msg: "El carrito no existe",
         statusCode: 400,
         init_point: null,
       };
+    }
+
+    const productosValidos = carrito.productos.filter(
+      (item) =>
+        item &&
+        item.producto &&
+        item.producto.nombre &&
+        item.producto.precio &&
+        item.cantidad > 0
+    );
+
+    if (productosValidos.length === 0) {
+      return {
+        msg: "El carrito está vacío o no tiene productos válidos",
+        statusCode: 400,
+        init_point: null,
+      };
+    }
+
+    if (productosValidos.length !== carrito.productos.length) {
+      carrito.productos = productosValidos;
+      await carrito.save();
     }
 
     if (!process.env.MP_ACCESS_TOKEN) {
@@ -104,7 +126,6 @@ const pagarProductoService = async (idUsuario) => {
     const client = new MercadoPagoConfig({
       accessToken: process.env.MP_ACCESS_TOKEN,
     });
-
     const preference = new Preference(client);
 
     const backUrls = {
@@ -115,7 +136,7 @@ const pagarProductoService = async (idUsuario) => {
 
     const result = await preference.create({
       body: {
-        items: carrito.productos.map((item) => ({
+        items: productosValidos.map((item) => ({
           title: item.producto.nombre,
           quantity: item.cantidad,
           unit_price: item.producto.precio,
