@@ -53,13 +53,6 @@ const crearNuevoUsuarioServicios = async (body) => {
     }
   } catch (error) {
     console.log(error);
-    if (error.code === 11000) {
-      return {
-        msg: "El nombre de usuario ya existe",
-        statusCode: 400,
-      };
-    }
-
     return {
       msg: "Error al crear usuario",
       statusCode: 500,
