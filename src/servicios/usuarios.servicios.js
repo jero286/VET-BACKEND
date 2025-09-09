@@ -136,9 +136,6 @@ const eliminarUsuarioPorIdServicios = async (idUsuario) => {
   };
 };
 
-// const jwt = require("jsonwebtoken");
-// const UsuariosModel = require("../models/Usuarios"); // ajusta ruta
-
 const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   try {
     console.log(emailUsuario);
