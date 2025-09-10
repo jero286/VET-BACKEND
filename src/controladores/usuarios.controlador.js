@@ -6,8 +6,7 @@ const {
   actualizarUsuarioPorIdServicios,
   eliminarUsuarioPorIdServicios,
   recuperarContraseniaUsuarioServices,
-  cambioDeContraseniaUsuarioTokenServicios
-
+  cambioDeContraseniaUsuarioTokenServicios,
 } = require("../servicios/usuarios.servicios");
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -68,19 +67,37 @@ const recuperarContraseniaUsuario = async (req, res) => {
 };
 
 const cambioDeContraseniaUsuarioToken = async (req, res) => {
-  console.log("token query", req.query)
-  const { msg, statusCode, error } =
-    await cambioDeContraseniaUsuarioTokenServicios(
-      req.query.token,
-      req.body.contrasenia)
   try {
-    res.status(statusCode).json({ msg })
-  } catch (error) {
-    console.error(error)
-    res.status(statusCode).json({ error })
+    const token = (req.query.token || "").trim();
+    const { contrasenia } = req.body;
+
+    console.log("Controller - token recibido:", token);
+    console.log("Controller - body:", req.body);
+
+    if (!token)
+      return res.status(400).json({ error: "Falta token en la query." });
+    if (!contrasenia)
+      return res
+        .status(400)
+        .json({ error: "Falta el campo contrasenia en body." });
+
+    const resultado = await cambioDeContraseniaUsuarioTokenServicios(
+      token,
+      contrasenia
+    );
+
+    if (resultado.error) {
+      return res
+        .status(resultado.statusCode || 500)
+        .json({ error: resultado.error });
+    }
+
+    return res.status(resultado.statusCode || 200).json({ msg: resultado.msg });
+  } catch (err) {
+    console.error("Controller - error inesperado:", err);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-
 
 module.exports = {
   obtenerTodosLosUsuarios,
@@ -90,6 +107,5 @@ module.exports = {
   actualizarUsuarioPorId,
   eliminarUsuarioPorId,
   recuperarContraseniaUsuario,
-  cambioDeContraseniaUsuarioToken
+  cambioDeContraseniaUsuarioToken,
 };
-

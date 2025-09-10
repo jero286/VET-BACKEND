@@ -156,7 +156,7 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
 
     const tokenRecuperarContrasenia = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_RECOVERY_PASS,
       {
         expiresIn: "1h",
       }
@@ -189,21 +189,27 @@ const cambioDeContraseniaUsuarioTokenServicios = async (
       token,
       process.env.JWT_SECRET_RECOVERY_PASS
     );
-    const usuario = await UsuariosModelo.findOne({
-      _id: verificarUsuario.idUsuario,
-    });
+    const usuario = await UsuariosModelo.findById(verificarUsuario.idUsuario);
+
+    if (!usuario) {
+      return { statusCode: 404, error: "Usuario no encontrado" };
+    }
 
     usuario.contrasenia = await argon.hash(nuevaContrasenia);
-    usuario.save();
-    return {
-      msg: "Se cambio la contraseña exitosamente",
-      statusCode: 200,
-    };
-  } catch (error) {
-    return {
-      error,
-      statusCode: 500,
-    };
+    await usuario.save();
+
+    return { msg: "Se cambió la contraseña exitosamente", statusCode: 200 };
+  } catch (err) {
+    console.error("Service - error al verificar token / cambiar pass:", err);
+
+    if (err.name === "TokenExpiredError") {
+      return { statusCode: 401, error: "Token expirado" };
+    }
+    if (err.name === "JsonWebTokenError") {
+      return { statusCode: 400, error: "Token inválido" };
+    }
+
+    return { statusCode: 500, error: "Error interno del servidor" };
   }
 };
 
