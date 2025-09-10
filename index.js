@@ -18,6 +18,8 @@ app.use("/mascotas", require("./src/rutas/mascotas"));
 app.use("/api/consultas", require("./src/rutas/consultas"));
 const carritoRoutes = require("./src/rutas/carrito");
 app.use("/carrito", carritoRoutes);
+const rutaContacto = require("./src/rutas/contacto");
+app.use("/api", rutaContacto);
 
 const PORT = process.env.PORT || process.env.PUERTO;
 app.listen(PORT, () => {
