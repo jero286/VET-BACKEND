@@ -59,30 +59,101 @@ const eliminarTurnoService = async (idTurno) => {
 
 const actualizarTurnoService = async (idTurno, body) => {
   try {
+    const { fecha, hora, ...otrosCampos } = body;
+
+    let fechaObj = null;
+    let horaObj = null;
+
+    const isNum = (v) => typeof v === "number" && !isNaN(v);
+
+    if (
+      hora &&
+      typeof hora === "string" &&
+      (hora.includes("T") || hora.includes("Z"))
+    ) {
+      horaObj = new Date(hora);
+      if (isNaN(horaObj.getTime())) {
+        throw new Error("Hora inválida (ISO)");
+      }
+
+      if (!fecha) {
+        fechaObj = new Date(
+          horaObj.getFullYear(),
+          horaObj.getMonth(),
+          horaObj.getDate()
+        );
+      }
+    }
+
+    if (fecha && typeof fecha === "string") {
+      const partesFecha = fecha.split("-");
+      if (partesFecha.length === 3) {
+        const [yyyy, mm, dd] = partesFecha.map(Number);
+        if ([yyyy, mm, dd].some((v) => isNaN(v))) {
+          throw new Error("Fecha inválida (componentes no numéricos)");
+        }
+        fechaObj = new Date(yyyy, mm - 1, dd);
+        if (isNaN(fechaObj.getTime())) throw new Error("Fecha inválida");
+      } else {
+        throw new Error("Formato de fecha inválido (esperado YYYY-MM-DD)");
+      }
+    }
+
+    if (!horaObj && hora && typeof hora === "string" && hora.includes(":")) {
+      if (!fechaObj) {
+        throw new Error(
+          "Para usar formato 'HH:mm' es necesario enviar también 'fecha' (YYYY-MM-DD)"
+        );
+      }
+      const [hh, min] = hora.split(":").map(Number);
+      if (isNaN(hh) || isNaN(min))
+        throw new Error("Formato de hora inválido (esperado HH:mm)");
+      horaObj = new Date(
+        fechaObj.getFullYear(),
+        fechaObj.getMonth(),
+        fechaObj.getDate(),
+        hh,
+        min,
+        0,
+        0
+      );
+      if (isNaN(horaObj.getTime()))
+        throw new Error("Hora inválida (no se pudo construir Date)");
+    }
+
+    if (!horaObj && hora && typeof hora === "object" && hora instanceof Date) {
+      if (!isNaN(hora.getTime())) horaObj = hora;
+      else throw new Error("Hora inválida (Date inválido)");
+    }
+
+    const updateData = { ...otrosCampos };
+    if (fechaObj) updateData.fecha = fechaObj;
+    if (horaObj) updateData.hora = horaObj;
+
+    if (Object.keys(updateData).length === 0) {
+      return { statusCode: 400, msg: "No hay datos válidos para actualizar" };
+    }
+
     const turnoActualizado = await turnoModelo.findByIdAndUpdate(
       idTurno,
-      body,
-      {
-        new: true,
-      }
+      updateData,
+      { new: true }
     );
 
     if (!turnoActualizado) {
-      return {
-        statusCode: 404,
-        msg: "Turno no encontrado",
-      };
+      return { statusCode: 404, msg: "Turno no encontrado" };
     }
 
     return {
       statusCode: 200,
       msg: "Turno actualizado con éxito",
+      turno: turnoActualizado,
     };
   } catch (error) {
-    console.error("Error en actualizarTurnoService:", error);
+    console.error("Error en actualizarTurnoService:", error.message || error);
     return {
       statusCode: 500,
-      msg: "Error al actualizar el turno",
+      msg: error.message || "Error al actualizar el turno",
     };
   }
 };
