@@ -18,7 +18,6 @@ const agregarProducto = async (req, res) => {
       .status(201)
       .json({ msg: "Producto agregado al carrito", carrito: resultado });
   } catch (error) {
-    console.error(error);
     res
       .status(500)
       .json({ msg: "Error al agregar producto al carrito", error });
@@ -32,7 +31,6 @@ const obtenerProductos = async (req, res) => {
     const carrito = await carritoService.obtenerCarrito(idUsuario);
     res.json(carrito);
   } catch (error) {
-    console.error("Error en obtenerProductos:", error.message);
     res.status(500).json({ msg: "Error en servidor" });
   }
 };
@@ -50,7 +48,6 @@ const eliminarProducto = async (req, res) => {
       .status(200)
       .json({ mensaje: "Producto eliminado del carrito", carrito });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ msg: "Error al eliminar producto", error });
   }
 };
@@ -61,7 +58,6 @@ const vaciar = async (req, res) => {
     const carrito = await carritoService.vaciarCarrito(idUsuario);
     res.status(200).json({ mensaje: "Carrito vaciado", carrito });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ msg: "Error al vaciar carrito", error });
   }
 };
@@ -76,7 +72,6 @@ const pagarProducto = async (req, res) => {
     }
     res.status(statusCode).json({ init_point });
   } catch (error) {
-    console.error(error);
     res
       .status(500)
       .json({ msg: "Error al generar preferencia de pago", error });

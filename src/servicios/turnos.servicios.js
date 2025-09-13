@@ -150,7 +150,6 @@ const actualizarTurnoService = async (idTurno, body) => {
       turno: turnoActualizado,
     };
   } catch (error) {
-    console.error("Error en actualizarTurnoService:", error.message || error);
     return {
       statusCode: 500,
       msg: error.message || "Error al actualizar el turno",
@@ -161,7 +160,6 @@ const actualizarTurnoService = async (idTurno, body) => {
 const crearTurnoService = async (body) => {
   try {
     const usuario = await usuarioModelo.findOne({ _id: body.idUsuario });
-    console.log("Usuario encontrado:", usuario);
 
     const fechaParts = body.fecha.split("-");
     const fechaLocal = new Date(
@@ -186,7 +184,6 @@ const crearTurnoService = async (body) => {
       msg: "Turno creado",
     };
   } catch (err) {
-    console.error(err);
     return {
       statusCodeError: 400,
     };

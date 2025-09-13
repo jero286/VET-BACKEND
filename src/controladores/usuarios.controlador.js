@@ -24,7 +24,6 @@ const crearNuevoUsuario = async (req, res) => {
     const { msg, statusCode } = await crearNuevoUsuarioServicios(req.body);
     res.status(statusCode).json({ msg });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ msg: "Error inesperado en el servidor" });
   }
 };
@@ -61,7 +60,6 @@ const recuperarContraseniaUsuario = async (req, res) => {
 
     return res.status(statusCode).json({ msg: msg || "Operación exitosa" });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
@@ -70,9 +68,6 @@ const cambioDeContraseniaUsuarioToken = async (req, res) => {
   try {
     const token = (req.query.token || "").trim();
     const { contrasenia } = req.body;
-
-    console.log("Controller - token recibido:", token);
-    console.log("Controller - body:", req.body);
 
     if (!token)
       return res.status(400).json({ error: "Falta token en la query." });
@@ -94,7 +89,6 @@ const cambioDeContraseniaUsuarioToken = async (req, res) => {
 
     return res.status(resultado.statusCode || 200).json({ msg: resultado.msg });
   } catch (err) {
-    console.error("Controller - error inesperado:", err);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };

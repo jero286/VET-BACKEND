@@ -39,7 +39,6 @@ const crearNuevoUsuarioServicios = async (body) => {
     if (statusCode === 200) {
       await nuevoUsuario.save();
       await carritoUsuario.save();
-      console.log(body);
 
       return {
         msg: "Usuario Creado",
@@ -52,7 +51,6 @@ const crearNuevoUsuarioServicios = async (body) => {
       };
     }
   } catch (error) {
-    console.log(error);
     return {
       msg: "Error al crear usuario",
       statusCode: 500,
@@ -119,7 +117,6 @@ const actualizarUsuarioPorIdServicios = async (idUsuario, body) => {
       data: usuarioActualizado,
     };
   } catch (error) {
-    console.error("Error al actualizar usuario", error);
     return {
       msg: "Error en el servidor",
       statusCode: 500,
@@ -138,10 +135,7 @@ const eliminarUsuarioPorIdServicios = async (idUsuario) => {
 
 const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   try {
-    console.log(emailUsuario);
-
     const usuarioExiste = await UsuariosModelo.findOne({ emailUsuario });
-    console.log(usuarioExiste);
 
     if (!usuarioExiste) {
       return {
@@ -172,7 +166,6 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
       statusCode: 200,
     };
   } catch (error) {
-    console.log(error);
     return {
       error: error.message || "Error inesperado",
       statusCode: 500,
@@ -200,8 +193,6 @@ const cambioDeContraseniaUsuarioTokenServicios = async (
 
     return { msg: "Se cambió la contraseña exitosamente", statusCode: 200 };
   } catch (err) {
-    console.error("Service - error al verificar token / cambiar pass:", err);
-
     if (err.name === "TokenExpiredError") {
       return { statusCode: 401, error: "Token expirado" };
     }

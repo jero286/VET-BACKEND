@@ -21,7 +21,7 @@ const registroExitoso = async (emailUsuario, nombreUsuario) => {
       statusCode: 200,
     };
   } catch (error) {
-    console.log(error);
+    
     return {
       error,
       statusCode: 500,
@@ -46,7 +46,7 @@ const envioDeLaCompra = async (emailUsuario, nombreProducto) => {
       statusCode: 200,
     };
   } catch (error) {
-    console.log("Error al enviar el correo de compra:", error);
+   
     return {
       error: error.message || "Error inesperado al enviar correo",
       statusCode: 500,
@@ -70,7 +70,7 @@ const recuperarContrasenia = async (token, emailUsuario) => {
       statusCode: 200,
     };
   } catch (error) {
-    console.log("Error al enviar correo de recuperación:", error);
+   
     return {
       error: error.message || "Error inesperado al enviar correo",
       statusCode: 500,
