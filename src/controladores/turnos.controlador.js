@@ -9,12 +9,10 @@ const {
 
 const obtenerTodosLosTurnos = async (req, res) => {
   try {
-    const { turnos, statusCode } = await obtenerTodosLosTurnosService()
-    res.status(statusCode).json({ turnos })
-  } catch (error) {
-    console.log(error)
-  }
-}
+    const { turnos, statusCode } = await obtenerTodosLosTurnosService();
+    res.status(statusCode).json({ turnos });
+  } catch (error) {}
+};
 const obtenerTurnoPorId = async (req, res) => {
   try {
     const { statusCode, msg } = await obtenerTurnoPorIdService(req.params.id);
@@ -49,23 +47,22 @@ const eliminarTurno = async (req, res) => {
     const { statusCodeError } = await eliminarTurnoService(req.params.id);
     res
       .status(statusCodeError)
-      .json({ msg: "No se puede eliminar un turno inexistente" })
+      .json({ msg: "No se puede eliminar un turno inexistente" });
   }
-}
+};
 
 const actualizarTurno = async (req, res) => {
   try {
     const { statusCode, msg } = await actualizarTurnoService(
       req.params.id,
       req.body
-    )
+    );
 
-    res.status(statusCode).json({ msg })
+    res.status(statusCode).json({ msg });
   } catch (error) {
-    console.error("Error en actualizarTurno:", error)
-    res.status(500).json({ msg: "Error del servidor al actualizar turno" })
+    res.status(500).json({ msg: "Error del servidor al actualizar turno" });
   }
-}
+};
 
 const crearTurno = async (req, res) => {
   try {
@@ -85,5 +82,5 @@ module.exports = {
   actualizarTurno,
   crearTurno,
   obtenerTurnoDelUsuario,
-  obtenerTodosLosTurnos
+  obtenerTodosLosTurnos,
 };

@@ -1,81 +1,85 @@
-const { obtenerMascotasDelUsuarioServicios,
-        obtenerMascotaPorIdServicios,
-        eliminarMascotaPorIdServicios,
-        actualizarMascotaPorIdServicios,
-        crearNuevaMascotaServicios,
-        } = require("../servicios/mascotas.servicios")
+const {
+  obtenerMascotasDelUsuarioServicios,
+  obtenerMascotaPorIdServicios,
+  eliminarMascotaPorIdServicios,
+  actualizarMascotaPorIdServicios,
+  crearNuevaMascotaServicios,
+} = require("../servicios/mascotas.servicios");
 
 const obtenerMascotasDelUsuario = async (req, res) => {
-    const idUsuario = req.usuario._id 
-    const {mascotas, msg, statusCode} = await obtenerMascotasDelUsuarioServicios(idUsuario)
-    if(statusCode === 200){
-        res.status(statusCode).json({mascotas})
-    }else{
-        res.status(statusCode).json({msg}) 
-    }     
-}
+  const idUsuario = req.usuario._id;
+  const { mascotas, msg, statusCode } =
+    await obtenerMascotasDelUsuarioServicios(idUsuario);
+  if (statusCode === 200) {
+    res.status(statusCode).json({ mascotas });
+  } else {
+    res.status(statusCode).json({ msg });
+  }
+};
 
 const obtenerMascotaPorId = async (req, res) => {
-    const idMascota = req.params.id
-    console.log("id recibido",idMascota)
-    try {
-    const {mascota, msg, statusCode} = await obtenerMascotaPorIdServicios(idMascota)
-    if(statusCode === 200){
-        res.status(statusCode).json({mascota})
-    }else{
-        res.status(statusCode).json({msg})
-    }    
-    } catch (error) {
-        console.error("Error al obtener la mascota")
-        res.status(500).json({msg: "Error en el servidor"})
+  const idMascota = req.params.id;
+
+  try {
+    const { mascota, msg, statusCode } = await obtenerMascotaPorIdServicios(
+      idMascota
+    );
+    if (statusCode === 200) {
+      res.status(statusCode).json({ mascota });
+    } else {
+      res.status(statusCode).json({ msg });
     }
-}
+  } catch (error) {
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
 
 const crearNuevaMascota = async (req, res) => {
-    try {
-        const { msg, statusCode } = await crearNuevaMascotaServicios(
-            req.body,
-            req.usuario._id )
-        res.status(statusCode).json({ msg });
-    } catch (error) {
-        console.error("Error en el controlador al crear la mascota:", error);
-        res.status(500).json({ msg: "Error del servidor" });
-    }
-}
+  try {
+    const { msg, statusCode } = await crearNuevaMascotaServicios(
+      req.body,
+      req.usuario._id
+    );
+    res.status(statusCode).json({ msg });
+  } catch (error) {
+    res.status(500).json({ msg: "Error del servidor" });
+  }
+};
 
 const actualizarMascotaPorId = async (req, res) => {
-    const idMascota = req.params.id
-    const body = req.body
+  const idMascota = req.params.id;
+  const body = req.body;
 
-    try {
-        const { msg, statusCode, mascota } = await actualizarMascotaPorIdServicios(idMascota, body)
+  try {
+    const { msg, statusCode, mascota } = await actualizarMascotaPorIdServicios(
+      idMascota,
+      body
+    );
 
-        if (statusCode === 200) {
-            res.status(statusCode).json({ msg, mascota })
-        } else {
-            res.status(statusCode).json({ msg })
-        }
-    } catch (error) {
-        console.error("Error en el controlador al actualizar la mascota:", error)
-        res.status(500).json({ msg: "Error en el servidor" })
+    if (statusCode === 200) {
+      res.status(statusCode).json({ msg, mascota });
+    } else {
+      res.status(statusCode).json({ msg });
     }
-}
+  } catch (error) {
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
 
 const eliminarMascotaPorId = async (req, res) => {
-    const idMascota = req.params.id
-    try {
-        const { msg, statusCode } = await eliminarMascotaPorIdServicios(idMascota)
-        res.status(statusCode).json({ msg })
-    } catch (error) {
-        console.error("Error en el controlador al eliminar la mascota:", error)
-        res.status(500).json({ msg: "Error en el servidor" })
-    }
+  const idMascota = req.params.id;
+  try {
+    const { msg, statusCode } = await eliminarMascotaPorIdServicios(idMascota);
+    res.status(statusCode).json({ msg });
+  } catch (error) {
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
 };
 
 module.exports = {
-    obtenerMascotasDelUsuario,
-    obtenerMascotaPorId,
-    crearNuevaMascota,
-    actualizarMascotaPorId,
-    eliminarMascotaPorId
-}
+  obtenerMascotasDelUsuario,
+  obtenerMascotaPorId,
+  crearNuevaMascota,
+  actualizarMascotaPorId,
+  eliminarMascotaPorId,
+};

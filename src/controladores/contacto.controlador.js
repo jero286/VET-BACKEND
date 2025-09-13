@@ -28,8 +28,6 @@ const enviarMensaje = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ message: "Mensaje enviado con éxito" });
   } catch (error) {
-    console.error("Error al enviar mensaje:", error.message);
-    console.error("Stack:", error.stack);
     res.status(500).json({
       message: "Error al enviar el mensaje",
       error: error.message,
