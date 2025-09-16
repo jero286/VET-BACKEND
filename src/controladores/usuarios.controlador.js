@@ -15,7 +15,7 @@ const obtenerTodosLosUsuarios = async (req, res) => {
 };
 
 const obtenerUnUsuarioPorId = async (req, res) => {
-  const { usuario, statusCode } = await obtenerUnUsuarioPorIdServicios();
+  const { usuario, statusCode } = await obtenerUnUsuarioPorIdServicios(req.params.id); // ✅ Agregar req.params.id
   res.status(statusCode).json({ usuario });
 };
 
