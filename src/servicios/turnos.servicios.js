@@ -1,5 +1,10 @@
 const turnoModelo = require("../modelos/turnos.js");
 const usuarioModelo = require("../modelos/usuarios.modelo.js");
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const tz = require("dayjs/plugin/timezone");
+dayjs.extend(utc);
+dayjs.extend(tz);
 
 const obtenerTodosLosTurnosService = async () => {
   try {
@@ -162,18 +167,19 @@ const crearTurnoService = async (body) => {
     const usuario = await usuarioModelo.findById(body.idUsuario);
     if (!usuario) throw new Error("Usuario no encontrado");
 
-    const [year, month, day] = body.fecha.split("-").map(Number);
-    const [hh, mm] = body.hora.split(":").map(Number);
+    const fechaHoraStr = `${body.fecha}T${body.hora}:00`;
 
-    const fechaObj = new Date(year, month - 1, day);
-    const horaObj = new Date(year, month - 1, day, hh, mm);
+    const fechaHoraArgentina = dayjs.tz(
+      fechaHoraStr,
+      "America/Argentina/Buenos_Aires"
+    );
 
     const nuevoTurno = new turnoModelo({
       detalle: body.detalle,
       veterinario: body.veterinario,
       mascota: body.mascota,
-      fecha: fechaObj,
-      hora: horaObj,
+      fecha: fechaHoraArgentina.startOf("day").toDate(),
+      hora: fechaHoraArgentina.toDate(),
       idUsuario: usuario._id,
     });
 
@@ -181,7 +187,6 @@ const crearTurnoService = async (body) => {
 
     return { statusCode: 201, msg: "Turno creado" };
   } catch (err) {
-    console.error(err);
     return {
       statusCodeError: 400,
       msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
