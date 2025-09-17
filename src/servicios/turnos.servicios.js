@@ -161,19 +161,17 @@ const crearTurnoService = async (body) => {
   try {
     const usuario = await usuarioModelo.findOne({ _id: body.idUsuario });
 
-    const fechaParts = body.fecha.split("-");
-    const fechaLocal = new Date(
-      fechaParts[0],
-      fechaParts[1] - 1,
-      fechaParts[2]
-    );
+    const [year, month, day] = body.fecha.split("-").map(Number);
+    const [hh, mm] = body.hora.split(":").map(Number);
+
+    const fechaObj = new Date(year, month - 1, day, hh, mm);
 
     const nuevoTurno = new turnoModelo({
       detalle: body.detalle,
       veterinario: body.veterinario,
       mascota: body.mascota,
-      fecha: fechaLocal,
-      hora: new Date(`${body.fecha}T${body.hora}`),
+      fecha: new Date(year, month - 1, day),
+      hora: fechaObj,
       idUsuario: usuario._id,
     });
 
@@ -184,8 +182,9 @@ const crearTurnoService = async (body) => {
       msg: "Turno creado",
     };
   } catch (err) {
+    console.error(err);
     return {
-      statusCodeError: 400,
+      msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
     };
   }
 };
