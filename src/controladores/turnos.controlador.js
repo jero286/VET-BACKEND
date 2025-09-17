@@ -53,13 +53,19 @@ const eliminarTurno = async (req, res) => {
 
 const actualizarTurno = async (req, res) => {
   try {
-    const { statusCode, msg } = await actualizarTurnoService(
-      req.params.id,
-      req.body
-    );
-
-    res.status(statusCode).json({ msg });
-  } catch (error) {
+    const result = await actualizarTurnoService(req.params.id, req.body);
+    if (result.statusCode && result.turno) {
+      return res
+        .status(result.statusCode)
+        .json({ msg: result.msg, turno: result.turno });
+    } else if (result.statusCode) {
+      return res.status(result.statusCode).json({ msg: result.msg });
+    } else {
+      return res
+        .status(result.statusCodeError || 500)
+        .json({ msg: result.msg });
+    }
+  } catch (err) {
     res.status(500).json({ msg: "Error del servidor al actualizar turno" });
   }
 };
