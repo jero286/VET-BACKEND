@@ -159,31 +159,31 @@ const actualizarTurnoService = async (idTurno, body) => {
 
 const crearTurnoService = async (body) => {
   try {
-    const usuario = await usuarioModelo.findOne({ _id: body.idUsuario });
+    const usuario = await usuarioModelo.findById(body.idUsuario);
+    if (!usuario) throw new Error("Usuario no encontrado");
 
     const [year, month, day] = body.fecha.split("-").map(Number);
     const [hh, mm] = body.hora.split(":").map(Number);
 
-    const fechaObj = new Date(year, month - 1, day, hh, mm);
+    const fechaObj = new Date(year, month - 1, day);
+    const horaObj = new Date(year, month - 1, day, hh, mm);
 
     const nuevoTurno = new turnoModelo({
       detalle: body.detalle,
       veterinario: body.veterinario,
       mascota: body.mascota,
-      fecha: new Date(year, month - 1, day),
-      hora: fechaObj,
+      fecha: fechaObj,
+      hora: horaObj,
       idUsuario: usuario._id,
     });
 
     await nuevoTurno.save();
 
-    return {
-      statusCode: 201,
-      msg: "Turno creado",
-    };
+    return { statusCode: 201, msg: "Turno creado" };
   } catch (err) {
     console.error(err);
     return {
+      statusCodeError: 400,
       msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
     };
   }
