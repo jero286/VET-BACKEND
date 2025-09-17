@@ -5,6 +5,7 @@ const utc = require("dayjs/plugin/utc");
 const tz = require("dayjs/plugin/timezone");
 dayjs.extend(utc);
 dayjs.extend(tz);
+const ZONE = "America/Argentina/Buenos_Aires";
 
 const obtenerTodosLosTurnosService = async () => {
   try {
@@ -69,66 +70,50 @@ const actualizarTurnoService = async (idTurno, body) => {
     let fechaObj = null;
     let horaObj = null;
 
-    const isNum = (v) => typeof v === "number" && !isNaN(v);
+    const isIsoLike = (s) =>
+      typeof s === "string" && (s.includes("T") || s.endsWith("Z"));
 
     if (
+      fecha &&
+      typeof fecha === "string" &&
       hora &&
       typeof hora === "string" &&
-      (hora.includes("T") || hora.includes("Z"))
+      hora.includes(":") &&
+      !isIsoLike(hora)
     ) {
-      horaObj = new Date(hora);
-      if (isNaN(horaObj.getTime())) {
-        throw new Error("Hora inválida (ISO)");
-      }
+      fechaObj = dayjs.tz(fecha, "YYYY-MM-DD", ZONE).startOf("day").toDate();
+
+      horaObj = dayjs.tz(`${fecha} ${hora}`, "YYYY-MM-DD HH:mm", ZONE).toDate();
+    } else if (hora && typeof hora === "string" && isIsoLike(hora)) {
+      horaObj = dayjs(hora).toDate();
 
       if (!fecha) {
-        fechaObj = new Date(
-          horaObj.getFullYear(),
-          horaObj.getMonth(),
-          horaObj.getDate()
-        );
-      }
-    }
-
-    if (fecha && typeof fecha === "string") {
-      const partesFecha = fecha.split("-");
-      if (partesFecha.length === 3) {
-        const [yyyy, mm, dd] = partesFecha.map(Number);
-        if ([yyyy, mm, dd].some((v) => isNaN(v))) {
-          throw new Error("Fecha inválida (componentes no numéricos)");
-        }
-        fechaObj = new Date(yyyy, mm - 1, dd);
-        if (isNaN(fechaObj.getTime())) throw new Error("Fecha inválida");
+        fechaObj = dayjs(horaObj).tz(ZONE).startOf("day").toDate();
       } else {
-        throw new Error("Formato de fecha inválido (esperado YYYY-MM-DD)");
+        fechaObj = dayjs.tz(fecha, "YYYY-MM-DD", ZONE).startOf("day").toDate();
       }
-    }
-
-    if (!horaObj && hora && typeof hora === "string" && hora.includes(":")) {
-      if (!fechaObj) {
-        throw new Error(
-          "Para usar formato 'HH:mm' es necesario enviar también 'fecha' (YYYY-MM-DD)"
-        );
-      }
-      const [hh, min] = hora.split(":").map(Number);
-      if (isNaN(hh) || isNaN(min))
-        throw new Error("Formato de hora inválido (esperado HH:mm)");
-      horaObj = new Date(
-        fechaObj.getFullYear(),
-        fechaObj.getMonth(),
-        fechaObj.getDate(),
-        hh,
-        min,
-        0,
-        0
-      );
-      if (isNaN(horaObj.getTime()))
-        throw new Error("Hora inválida (no se pudo construir Date)");
+    } else if (fecha && typeof fecha === "string") {
+      fechaObj = dayjs.tz(fecha, "YYYY-MM-DD", ZONE).startOf("day").toDate();
     }
 
     if (!horaObj && hora && typeof hora === "object" && hora instanceof Date) {
-      if (!isNaN(hora.getTime())) horaObj = hora;
-      else throw new Error("Hora inválida (Date inválido)");
+      if (!isNaN(hora.getTime())) {
+        horaObj = hora;
+        if (!fechaObj)
+          fechaObj = dayjs(horaObj).tz(ZONE).startOf("day").toDate();
+      } else {
+        throw new Error("Hora inválida (Date inválido)");
+      }
+    }
+
+    if (horaObj) {
+      const ahora = dayjs().toDate();
+      if (horaObj.getTime() <= ahora.getTime()) {
+        return {
+          statusCode: 400,
+          msg: "No podés elegir una fecha/hora pasada",
+        };
+      }
     }
 
     const updateData = { ...otrosCampos };
