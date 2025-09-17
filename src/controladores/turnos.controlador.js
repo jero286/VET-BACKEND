@@ -68,14 +68,15 @@ const crearTurno = async (req, res) => {
   try {
     const { statusCode, msg } = await crearTurnoService(req.body);
     res.status(statusCode).json({ msg });
-  } catch {
-    const { statusCodeError } = await crearTurnoService(req.body);
-    res.status(statusCodeError).json({
+  } catch (err) {
+    
+    res.status(400).json({
       msg: "No fue posible crear el turno. Por favor, ingrese bien sus datos",
     });
   }
 };
 
+module.exports = crearTurno;
 module.exports = {
   obtenerTurnoPorId,
   eliminarTurno,
