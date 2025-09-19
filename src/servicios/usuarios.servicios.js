@@ -25,34 +25,103 @@ const obtenerUnUsuarioPorIdServicios = async (idUsuario) => {
 
 const crearNuevoUsuarioServicios = async (body) => {
   try {
+    const usuarioExiste = await UsuariosModelo.findOne({
+      nombreUsuario: body.nombreUsuario,
+    });
+
+    if (usuarioExiste) {
+      return {
+        msg: "El nombre de usuario ya está en uso",
+        statusCode: 400,
+      };
+    }
+
+    const emailExiste = await UsuariosModelo.findOne({
+      emailUsuario: body.emailUsuario,
+    });
+
+    if (emailExiste) {
+      return {
+        msg: "El email ya está registrado",
+        statusCode: 400,
+      };
+    }
+
+    const telefonoExiste = await UsuariosModelo.findOne({
+      telefono: body.telefono,
+    });
+
+    if (telefonoExiste) {
+      return {
+        msg: "El teléfono ya está registrado",
+        statusCode: 400,
+      };
+    }
+
     const nuevoUsuario = new UsuariosModelo(body);
     const carritoUsuario = new ModeloCarrito({ idUsuario: nuevoUsuario._id });
 
     nuevoUsuario.contrasenia = await argon.hash(nuevoUsuario.contrasenia);
     nuevoUsuario.idCarrito = carritoUsuario._id;
 
-    const { statusCode, error } = await registroExitoso(
-      body.emailUsuario,
-      body.nombreUsuario
-    );
-
-    if (statusCode === 200) {
+    try {
       await nuevoUsuario.save();
       await carritoUsuario.save();
 
+      const { statusCode: emailStatusCode, error: emailError } = await registroExitoso(
+        body.emailUsuario,
+        body.nombreUsuario
+      );
+
+      if (emailStatusCode !== 200) {
+        console.warn("Error al enviar email de bienvenida:", emailError);
+      }
+
       return {
-        msg: "Usuario Creado",
+        msg: "Usuario creado exitosamente",
         statusCode: 201,
       };
-    } else {
-      return {
-        error,
-        statusCode,
-      };
+
+    } catch (saveError) {
+      if (saveError.code === 11000) {
+        const field = Object.keys(saveError.keyPattern)[0];
+        let mensaje = "";
+        
+        switch (field) {
+          case "nombreUsuario":
+            mensaje = "El nombre de usuario ya está en uso";
+            break;
+          case "emailUsuario":
+            mensaje = "El email ya está registrado";
+            break;
+          case "telefono":
+            mensaje = "El teléfono ya está registrado";
+            break;
+          default:
+            mensaje = "Ya existe un usuario con esos datos";
+        }
+        
+        return {
+          msg: mensaje,
+          statusCode: 400,
+        };
+      }
+
+      if (saveError.name === "ValidationError") {
+        const errores = Object.values(saveError.errors).map(err => err.message);
+        return {
+          msg: `Error de validación: ${errores.join(", ")}`,
+          statusCode: 400,
+        };
+      }
+
+      throw saveError;
     }
+
   } catch (error) {
+    console.error("Error en crearNuevoUsuarioServicios:", error);
     return {
-      msg: "Error al crear usuario",
+      msg: "Error interno del servidor",
       statusCode: 500,
     };
   }
