@@ -68,25 +68,32 @@ const crearNuevoUsuarioServicios = async (body) => {
       await nuevoUsuario.save();
       await carritoUsuario.save();
 
-      const { statusCode: emailStatusCode, error: emailError } = await registroExitoso(
-        body.emailUsuario,
-        body.nombreUsuario
-      );
-
-      if (emailStatusCode !== 200) {
-        console.warn("Error al enviar email de bienvenida:", emailError);
-      }
+      try {
+        const { statusCode: emailStatusCode, error: emailError } =
+          await Promise.race([
+            registroExitoso(body.emailUsuario, body.nombreUsuario),
+            new Promise((resolve) =>
+              setTimeout(
+                () =>
+                  resolve({
+                    statusCode: 408,
+                    error: "Timeout al enviar email",
+                  }),
+                5000
+              )
+            ),
+          ]);
+      } catch (emailTimeoutError) {}
 
       return {
         msg: "Usuario creado exitosamente",
         statusCode: 201,
       };
-
     } catch (saveError) {
       if (saveError.code === 11000) {
         const field = Object.keys(saveError.keyPattern)[0];
         let mensaje = "";
-        
+
         switch (field) {
           case "nombreUsuario":
             mensaje = "El nombre de usuario ya está en uso";
@@ -100,7 +107,7 @@ const crearNuevoUsuarioServicios = async (body) => {
           default:
             mensaje = "Ya existe un usuario con esos datos";
         }
-        
+
         return {
           msg: mensaje,
           statusCode: 400,
@@ -108,7 +115,9 @@ const crearNuevoUsuarioServicios = async (body) => {
       }
 
       if (saveError.name === "ValidationError") {
-        const errores = Object.values(saveError.errors).map(err => err.message);
+        const errores = Object.values(saveError.errors).map(
+          (err) => err.message
+        );
         return {
           msg: `Error de validación: ${errores.join(", ")}`,
           statusCode: 400,
@@ -117,9 +126,7 @@ const crearNuevoUsuarioServicios = async (body) => {
 
       throw saveError;
     }
-
   } catch (error) {
-    console.error("Error en crearNuevoUsuarioServicios:", error);
     return {
       msg: "Error interno del servidor",
       statusCode: 500,
